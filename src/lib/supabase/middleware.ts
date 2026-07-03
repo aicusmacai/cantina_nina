@@ -40,7 +40,7 @@ export async function updateSession(request: NextRequest) {
 
   const isAuthRoute = path.startsWith('/login') || path.startsWith('/cadastro')
   
-  if (!user && !isAuthRoute && path !== '/') {
+  if (!user && !isAuthRoute && path !== '/' && !path.startsWith('/home')) {
     // Redireciona para o login se tentar acessar área restrita sem estar logado
     const url = request.nextUrl.clone()
     url.pathname = '/login'
