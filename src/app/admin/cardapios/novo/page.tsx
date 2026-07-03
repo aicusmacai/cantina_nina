@@ -63,6 +63,20 @@ export default function NovoCardapioPage() {
           </div>
 
           <div>
+            <label htmlFor="imagem_url" className="block text-sm font-medium text-slate-700 mb-1">
+              URL da Foto (Opcional)
+            </label>
+            <input
+              type="url"
+              id="imagem_url"
+              name="imagem_url"
+              placeholder="https://exemplo.com/foto.jpg"
+              className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-nina-red-500 focus:border-nina-red-500 sm:text-sm"
+            />
+            <p className="text-xs text-slate-500 mt-1">Cole o link de uma imagem para ilustrar o cardápio.</p>
+          </div>
+
+          <div>
             <label htmlFor="valor_diario" className="block text-sm font-medium text-slate-700 mb-1">
               Valor Diário (R$)
             </label>

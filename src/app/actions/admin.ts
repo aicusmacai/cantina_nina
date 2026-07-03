@@ -11,6 +11,7 @@ export async function criarCardapio(prevState: any, formData: FormData) {
   const prato_principal = formData.get('prato_principal') as string
   const acompanhamentos = formData.get('acompanhamentos') as string
   const valor_diario = parseFloat(formData.get('valor_diario') as string)
+  const imagem_url = formData.get('imagem_url') as string
 
   if (!data_inicio_semana || !prato_principal || isNaN(valor_diario)) {
     return { error: 'Preencha os campos obrigatórios corretamente.' }
@@ -28,6 +29,7 @@ export async function criarCardapio(prevState: any, formData: FormData) {
     prato_principal,
     acompanhamentos,
     valor_diario,
+    imagem_url: imagem_url || null,
     ativo: true
   })
 

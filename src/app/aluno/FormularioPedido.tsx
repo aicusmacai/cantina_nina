@@ -12,6 +12,7 @@ type Cardapio = {
   prato_principal: string
   acompanhamentos: string
   valor_diario: number
+  imagem_url?: string
 }
 
 const diasSemanaNomes = [
@@ -74,6 +75,7 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
           const cardapioDia = cardapios.find(c => c.dia_semana === dia.id)
           const prato = cardapioDia?.prato_principal || 'Não definido'
           const preco = cardapioDia ? Number(cardapioDia.valor_diario) : 0
+          const imagem_url = cardapioDia?.imagem_url
           
           const precoItemDesconto = preco * (1 - descontoPercentual / 100)
           const mostrarDescontoItem = descontoPercentual > 0
@@ -85,33 +87,58 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               className={`
-                relative p-5 rounded-2xl border-2 text-left transition-colors overflow-hidden flex flex-col justify-between group
+                relative rounded-2xl border-2 text-left transition-colors overflow-hidden flex flex-col group p-0
                 ${isSelected 
                   ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-50 to-white shadow-md shadow-nina-red-100 ring-4 ring-nina-red-500/10' 
                   : 'border-slate-200 bg-white hover:border-nina-red-300 hover:shadow-lg hover:shadow-slate-200/50'
                 }
               `}
             >
-              <div className="flex justify-between items-start mb-3">
-                <span className={`font-black text-xl transition-colors ${isSelected ? 'text-nina-red-700' : 'text-slate-700 group-hover:text-slate-900'}`}>
-                  {dia.label}
-                </span>
-                <div className={`
-                  w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300
-                  ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-slate-300 bg-slate-50 group-hover:border-nina-red-300'}
-                `}>
-                  {isSelected && <Check size={16} strokeWidth={3} className="animate-in zoom-in duration-200" />}
+              {imagem_url && (
+                <div 
+                  className="w-full h-32 bg-cover bg-center border-b border-slate-100/50 relative"
+                  style={{ backgroundImage: `url(${imagem_url})` }}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+                    <span className="font-black text-xl text-white drop-shadow-md">
+                      {dia.label}
+                    </span>
+                    <div className={`
+                      w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300 shadow-md
+                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-white/50 bg-black/30 group-hover:border-white'}
+                    `}>
+                      {isSelected && <Check size={16} strokeWidth={3} className="animate-in zoom-in duration-200" />}
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
 
-              <div className="flex items-start gap-3 mb-4">
-                <div className={`p-2 rounded-xl shrink-0 transition-colors ${isSelected ? 'bg-nina-red-100 text-nina-red-600' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'}`}>
-                  <Utensils size={18} />
+              <div className="p-5 flex flex-col justify-between h-full flex-grow">
+                {!imagem_url && (
+                  <div className="flex justify-between items-start mb-3">
+                    <span className={`font-black text-xl transition-colors ${isSelected ? 'text-nina-red-700' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                      {dia.label}
+                    </span>
+                    <div className={`
+                      w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300
+                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-slate-300 bg-slate-50 group-hover:border-nina-red-300'}
+                    `}>
+                      {isSelected && <Check size={16} strokeWidth={3} className="animate-in zoom-in duration-200" />}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-start gap-3 mb-4">
+                  {!imagem_url && (
+                    <div className={`p-2 rounded-xl shrink-0 transition-colors ${isSelected ? 'bg-nina-red-100 text-nina-red-600' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'}`}>
+                      <Utensils size={18} />
+                    </div>
+                  )}
+                  <p className={`text-sm font-medium leading-snug mt-1 transition-colors ${isSelected ? 'text-nina-red-900' : 'text-slate-600'}`}>
+                    {prato}
+                  </p>
                 </div>
-                <p className={`text-sm font-medium leading-snug mt-1 transition-colors ${isSelected ? 'text-nina-red-900' : 'text-slate-600'}`}>
-                  {prato}
-                </p>
-              </div>
 
               <div className="mt-auto">
                 {mostrarDescontoItem ? (
@@ -127,6 +154,7 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
                   </div>
                 )}
               </div>
+            </div>
             </motion.button>
           )
         })}
