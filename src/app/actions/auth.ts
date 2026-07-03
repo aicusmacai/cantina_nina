@@ -76,11 +76,23 @@ export async function register(prevState: any, formData: FormData) {
       return { error: msg || 'Erro ao criar conta no banco de dados.', success: false }
     }
 
-    // Atualiza a turma usando o ID retornado pelo signUp (garante que funciona mesmo se a sessão não estiver ativa)
+    // Atualiza a turma usando o ID retornado pelo signUp
+    // NOTA: Usamos o admin client porque o RLS bloqueia usuários recém-criados de editarem a própria linha imediatamente.
     if (signUpData?.user && role === 'aluno' && turma) {
-      const { error: updateError } = await supabase.from('usuarios').update({ turma }).eq('id', signUpData.user.id)
-      if (updateError) {
-        console.error('Erro ao atualizar turma:', updateError)
+      try {
+        const { createAdminClient } = await import('@/lib/supabase/admin')
+        const adminClient = createAdminClient()
+        const { error: updateError } = await adminClient.from('usuarios').update({ turma }).eq('id', signUpData.user.id)
+        
+        if (updateError) {
+          console.error('Erro ao atualizar turma via adminClient:', updateError)
+        }
+      } catch (err) {
+        console.warn('Admin Client indisponível para atualizar turma, tentando fallback normal:', err)
+        const { error: fallbackError } = await supabase.from('usuarios').update({ turma }).eq('id', signUpData.user.id)
+        if (fallbackError) {
+          console.error('Fallback também falhou (Bloqueado por RLS):', fallbackError)
+        }
       }
     }
 
