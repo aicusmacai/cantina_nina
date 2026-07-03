@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cantina NINA 🍔
 
-## Getting Started
+Um sistema completo de gestão de cantina escolar, construído com Next.js, Tailwind CSS e Supabase, projetado para oferecer uma experiência moderna, ágil e segura para alunos, funcionários e administradores.
 
-First, run the development server:
+## 🚀 Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 👨‍🎓 Para o Aluno / Responsável
+- **Painel Interativo:** Interface amigável para montar os pedidos semanais.
+- **Visualização do Cardápio:** Saiba exatamente o que será servido em cada dia da semana.
+- **Checkout com Pix:** Geração instantânea de QR Code e Pix "Copia e Cola" via Mercado Pago.
+- **Acompanhamento:** Histórico completo dos pedidos e seus respectivos status.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 👩‍🍳 Para o Funcionário da Cantina
+- **Entregas do Dia:** Listagem focada e em tempo real dos alunos que já pagaram e têm direito à refeição no dia selecionado.
+- **Navegação por Dia:** Botões fáceis para transitar entre os dias da semana (Segunda a Sexta).
+- **Layout de Impressão:** Ao clicar no botão de imprimir, a interface gráfica desaparece e apenas a lista limpa com nomes e turmas é enviada para a impressora, economizando papel e tinta.
+- **Controle de Fluxo:** Botão de um clique para marcar um prato como "Entregue".
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 👑 Para a Administração (Escola)
+- **Gestão de Cardápio Fixo:** Defina o prato de cada dia da semana e o preço unitário. O sistema cuida do resto!
+- **Painel de Pedidos:** Visão geral com todos os pedidos gerados no sistema, seus valores e turmas.
+- **Gestão de Usuários:** Controle de contas, com opção de definir cargos (admin, funcionario, aluno).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tecnologias Utilizadas
 
-## Learn More
+- **Framework:** [Next.js 14](https://nextjs.org/) (App Router)
+- **Estilização:** [Tailwind CSS](https://tailwindcss.com/)
+- **Ícones:** [Lucide React](https://lucide.dev/)
+- **Backend & Banco de Dados:** [Supabase](https://supabase.com/) (PostgreSQL + Auth + RLS)
+- **Pagamentos:** API do [Mercado Pago](https://www.mercadopago.com.br/developers/pt)
 
-To learn more about Next.js, take a look at the following resources:
+## 📦 Como Instalar e Rodar o Projeto
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Pré-requisitos
+- Node.js 18+ instalado.
+- Uma conta no Supabase (com projeto criado).
+- Uma conta no Mercado Pago (com credenciais de produção ativadas).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Passo a Passo
 
-## Deploy on Vercel
+1. **Clone ou baixe o repositório** para o seu computador.
+2. Abra o terminal na pasta do projeto e instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Crie um arquivo chamado `.env.local` na raiz do projeto (mesmo nível da pasta `src`) com as seguintes variáveis:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=Sua_URL_do_Supabase
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=Sua_Anon_Key_do_Supabase
+   MERCADOPAGO_ACCESS_TOKEN=Seu_Token_De_Producao_Do_Mercado_Pago
+   ```
+4. **Configurando o Banco de Dados:**
+   - Acesse o "SQL Editor" no painel do seu projeto no Supabase.
+   - Copie o conteúdo dos arquivos da pasta `supabase/migrations/` e execute-os na ordem.
+5. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
+6. Acesse `http://localhost:3000` no seu navegador.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Dicas para Testes
+- Quando você se cadastrar no sistema pela primeira vez, sua conta será de "aluno". Para acessar os menus da escola, mude o seu cargo na tabela `usuarios` do Supabase para `admin` ou `funcionario`.
+- **Lembrete sobre o Mercado Pago:** A geração do QR Code do Pix só funciona utilizando o token de **Produção** (`APP_USR-...`) e o cadastro de ao menos uma Chave Pix no app recebedor.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Desenvolvido com carinho para simplificar o intervalo. 🍎*
