@@ -51,10 +51,10 @@ export default async function AdminPedidosPage() {
                     {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
                   </td>
                   <td className="p-4 font-medium text-slate-900">
-                    {pedido.usuarios?.nome_completo}
+                    {(pedido.usuarios as any)?.nome_completo}
                   </td>
                   <td className="p-4 text-sm text-slate-600">
-                    {pedido.usuarios?.turma || '-'}
+                    {(pedido.usuarios as any)?.turma || '-'}
                   </td>
                   <td className="p-4">
                     <div className="flex gap-1 flex-wrap">

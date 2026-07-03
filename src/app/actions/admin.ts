@@ -48,7 +48,7 @@ export async function excluirCardapio(id: string) {
   const { error } = await supabase.from('cardapios').delete().eq('id', id)
   
   if (error) {
-    return { error: error.message }
+    throw new Error(error.message)
   }
   
   revalidatePath('/admin/cardapios')
@@ -64,10 +64,10 @@ export async function salvarConfiguracoes(formData: FormData) {
 
   // Verifica se o usuário é admin
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { error: 'Não autorizado' }
+  if (!user) throw new Error('Não autorizado')
 
   const { data: userData } = await supabase.from('usuarios').select('role').eq('id', user.id).single()
-  if (userData?.role !== 'admin') return { error: 'Não autorizado' }
+  if (userData?.role !== 'admin') throw new Error('Não autorizado')
 
   const { error } = await supabase.from('configuracoes').upsert({
     id: parseInt(id, 10) || 1,
@@ -77,7 +77,7 @@ export async function salvarConfiguracoes(formData: FormData) {
   })
 
   if (error) {
-    return { error: error.message }
+    throw new Error(error.message)
   }
 
   revalidatePath('/admin/configuracoes')

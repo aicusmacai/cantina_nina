@@ -93,11 +93,11 @@ export default async function FuncionarioDashboard(
               <div>
                 <div className="flex items-center gap-3 mb-1">
                   <h3 className="font-bold text-slate-900 text-lg print:text-base">
-                    {pedido.usuarios?.nome_completo || 'Aluno Excluído'}
+                    {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
                   </h3>
                 </div>
                 <div className="flex items-center gap-4 text-sm text-slate-500 print:text-slate-700">
-                  <span><strong className="text-slate-700">Turma:</strong> {pedido.usuarios?.turma || '-'}</span>
+                  <span><strong className="text-slate-700">Turma:</strong> {(pedido.usuarios as any)?.turma || '-'}</span>
                   <span className="print:hidden"><strong className="text-slate-700">Prato:</strong> {pratoHoje}</span>
                 </div>
               </div>
