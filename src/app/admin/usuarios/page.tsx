@@ -33,51 +33,49 @@ export default async function UsuariosPage(props: { searchParams: Promise<{ q?: 
         <BuscaUsuarios />
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[800px]">
-          <thead>
-            <tr className="bg-slate-50 border-b border-slate-200 text-sm">
-              <th className="py-4 px-6 font-semibold text-slate-600">Usuário</th>
-              <th className="py-4 px-6 font-semibold text-slate-600">Login</th>
-              <th className="py-4 px-6 font-semibold text-slate-600">Turma</th>
-              <th className="py-4 px-6 font-semibold text-slate-600">Perfil</th>
-              <th className="py-4 px-6 font-semibold text-slate-600 w-16 text-center">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usuarios && usuarios.length > 0 ? (
-              usuarios.map((user) => (
-                <tr key={user.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
-                  <td className="py-4 px-6 text-slate-900 flex items-center gap-3 font-medium">
-                    <UserCircle className="text-slate-400" size={24} />
+      <div className="grid gap-4">
+        {usuarios && usuarios.length > 0 ? (
+          usuarios.map((user) => (
+            <div key={user.id} className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300 group">
+              
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 group-hover:bg-nina-red-50 group-hover:text-nina-red-600 transition-colors">
+                  <UserCircle size={28} />
+                </div>
+                
+                <div>
+                  <h3 className="font-bold text-slate-900 text-lg flex items-center gap-3">
                     {user.nome_completo}
-                  </td>
-                  <td className="py-4 px-6 text-slate-600">
-                    {user.email.split('@')[0]}
-                  </td>
-                  <td className="py-4 px-6 text-slate-600">
-                    {user.turma || '-'}
-                  </td>
-                  <td className="py-4 px-6">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${getRoleBadgeColor(user.role)}`}>
+                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${getRoleBadgeColor(user.role)}`}>
                       {user.role}
                     </span>
-                  </td>
-                  <td className="py-4 px-6 flex justify-center">
-                    <AcoesUsuario userId={user.id} currentEmail={user.email} />
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5} className="py-12 text-center text-slate-500">
-                  <p className="text-lg font-medium text-slate-600 mb-1">Nenhum usuário encontrado</p>
-                  <p className="text-sm">Tente ajustar o termo de pesquisa</p>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                  </h3>
+                  <div className="flex items-center gap-4 text-sm text-slate-500 mt-1">
+                    <span className="flex items-center gap-1">
+                      <span className="font-medium text-slate-400">Login:</span> 
+                      {user.email.split('@')[0]}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="font-medium text-slate-400">Turma:</span> 
+                      {user.turma || 'N/A'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end mt-2 sm:mt-0">
+                <AcoesUsuario userId={user.id} currentEmail={user.email} />
+              </div>
+              
+            </div>
+          ))
+        ) : (
+          <div className="bg-slate-50/50 p-12 rounded-3xl border border-dashed border-slate-300 text-center flex flex-col items-center justify-center">
+            <UserCircle size={48} className="text-slate-300 mb-4" />
+            <p className="text-xl font-bold text-slate-700 mb-1">Nenhum usuário encontrado</p>
+            <p className="text-slate-500">Tente ajustar o termo de pesquisa</p>
+          </div>
+        )}
       </div>
     </div>
   )
