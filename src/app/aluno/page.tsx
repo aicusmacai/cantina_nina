@@ -11,15 +11,24 @@ export default async function AlunoDashboard() {
     .select('*')
     .order('dia_semana', { ascending: true })
 
-  // Busca o nome do usuário
+  // Busca o nome e turma do usuário
   const { data: { user } } = await supabase.auth.getUser()
   const { data: usuario } = await supabase
     .from('usuarios')
-    .select('nome_completo')
+    .select('nome_completo, turma')
     .eq('id', user?.id)
     .single()
 
   const primeiroNome = usuario?.nome_completo?.split(' ')[0] || 'Aluno'
+  const isProfessor = usuario?.turma === 'Professor / Funcionário' || usuario?.turma === 'Professor'
+
+  // Busca as configurações (para pegar o desconto)
+  const { data: config } = await supabase
+    .from('configuracoes')
+    .select('desconto_professor_percentual')
+    .single()
+    
+  const descontoPercentual = isProfessor ? (config?.desconto_professor_percentual || 0) : 0
 
   return (
     <div>
@@ -37,7 +46,7 @@ export default async function AlunoDashboard() {
           </p>
         </div>
       ) : (
-        <FormularioPedido cardapios={cardapios} />
+        <FormularioPedido cardapios={cardapios} descontoPercentual={descontoPercentual} />
       )}
     </div>
   )

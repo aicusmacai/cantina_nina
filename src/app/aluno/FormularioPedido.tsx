@@ -21,7 +21,7 @@ const diasSemanaNomes = [
   { id: 5, label: 'Sexta', short: 'Sex' },
 ]
 
-export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] }) {
+export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: { cardapios: Cardapio[], descontoPercentual?: number }) {
   const router = useRouter()
   const [diasSelecionados, setDiasSelecionados] = useState<number[]>([])
   const [isPending, setIsPending] = useState(false)
@@ -36,10 +36,13 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
   }
 
   // Calculate total price by summing the valor_diario of each selected day
-  const valorTotal = diasSelecionados.reduce((total, diaId) => {
+  const valorOriginal = diasSelecionados.reduce((total, diaId) => {
     const cardapioDia = cardapios.find(c => c.dia_semana === diaId)
     return total + (cardapioDia ? Number(cardapioDia.valor_diario) : 0)
   }, 0)
+
+  const valorComDesconto = valorOriginal * (1 - descontoPercentual / 100)
+  const temDesconto = descontoPercentual > 0 && diasSelecionados.length > 0
 
   const handleSubmit = async () => {
     if (diasSelecionados.length === 0) {
@@ -50,7 +53,7 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
     setIsPending(true)
     setError('')
 
-    const result = await criarPedido(diasSelecionados, valorTotal)
+    const result = await criarPedido(diasSelecionados, valorComDesconto)
     
     if (result.success && result.pedidoId) {
       router.push(`/aluno/pagamento/${result.pedidoId}`)
@@ -70,6 +73,9 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
           const cardapioDia = cardapios.find(c => c.dia_semana === dia.id)
           const prato = cardapioDia?.prato_principal || 'Não definido'
           const preco = cardapioDia ? Number(cardapioDia.valor_diario) : 0
+          
+          const precoItemDesconto = preco * (1 - descontoPercentual / 100)
+          const mostrarDescontoItem = descontoPercentual > 0
 
           return (
             <button
@@ -104,8 +110,19 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
                 </p>
               </div>
 
-              <div className={`mt-auto text-base font-bold transition-colors ${isSelected ? 'text-nina-red-600' : 'text-slate-500 group-hover:text-slate-700'}`}>
-                R$ {preco.toFixed(2).replace('.', ',')}
+              <div className="mt-auto">
+                {mostrarDescontoItem ? (
+                  <div className="flex flex-col">
+                    <span className="text-xs text-slate-400 line-through">R$ {preco.toFixed(2).replace('.', ',')}</span>
+                    <span className={`text-base font-bold transition-colors ${isSelected ? 'text-nina-red-600' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                      R$ {precoItemDesconto.toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                ) : (
+                  <div className={`text-base font-bold transition-colors ${isSelected ? 'text-nina-red-600' : 'text-slate-500 group-hover:text-slate-700'}`}>
+                    R$ {preco.toFixed(2).replace('.', ',')}
+                  </div>
+                )}
               </div>
             </button>
           )
@@ -117,13 +134,26 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-nina-red-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
-        <div className="text-center sm:text-left mb-6 sm:mb-0 relative z-10">
+        <div className="text-center sm:text-left mb-6 sm:mb-0 relative z-10 w-full sm:w-auto">
           <p className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
             Total do Pedido
           </p>
-          <div className="text-4xl md:text-5xl font-black text-white flex items-baseline justify-center sm:justify-start">
-            <span className="text-2xl text-slate-400 font-bold mr-2">R$</span>
-            <span className="tabular-nums tracking-tight">{valorTotal.toFixed(2).replace('.', ',')}</span>
+          <div className="text-4xl md:text-5xl font-black text-white flex flex-wrap items-baseline justify-center sm:justify-start gap-3">
+            <div className="flex items-baseline">
+              <span className="text-2xl text-slate-400 font-bold mr-2">R$</span>
+              <span className="tabular-nums tracking-tight">{valorComDesconto.toFixed(2).replace('.', ',')}</span>
+            </div>
+            
+            {temDesconto && (
+              <div className="flex flex-col sm:flex-row items-center gap-2">
+                <span className="text-lg md:text-xl text-slate-500 font-medium line-through">
+                  R$ {valorOriginal.toFixed(2).replace('.', ',')}
+                </span>
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider border border-green-500/30">
+                  -{descontoPercentual}% OFF
+                </span>
+              </div>
+            )}
           </div>
           <p className="text-sm text-slate-400 mt-2 font-medium">
             {diasSelecionados.length} {diasSelecionados.length === 1 ? 'dia selecionado' : 'dias selecionados'} na semana
