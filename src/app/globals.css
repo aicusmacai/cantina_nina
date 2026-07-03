@@ -24,12 +24,7 @@
   --foreground: #0f172a; /* slate-900 as dark text */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-  }
-}
+/* Remover dark mode automático para garantir consistência visual */
 
 body {
   background-color: var(--background);

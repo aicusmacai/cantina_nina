@@ -91,8 +91,8 @@ export default async function Home() {
 
           <div className="flex-1 w-full max-w-md lg:max-w-full group">
             <div className="bg-white/90 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50 border border-white/50 relative overflow-hidden transition-all duration-500 hover:shadow-nina-red-100">
-              <div className="absolute -top-10 -right-10 p-8 text-slate-50 opacity-40 pointer-events-none group-hover:scale-110 group-hover:rotate-12 transition-all duration-700">
-                <Utensils size={280} />
+              <div className="absolute -top-16 -right-16 w-80 h-80 opacity-90 pointer-events-none group-hover:scale-105 group-hover:-rotate-3 transition-all duration-700">
+                <img src="/hero.png" alt="Bandeja de almoço deliciosa" className="w-full h-full object-cover rounded-full shadow-2xl shadow-slate-200" />
               </div>
               
               <div className="relative z-10 space-y-10">
