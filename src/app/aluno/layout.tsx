@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Utensils, ReceiptText, LogOut } from 'lucide-react'
+import { Utensils, ReceiptText, LogOut, UserCircle } from 'lucide-react'
 import { logout } from '@/app/actions/auth'
 
 export default function AlunoLayout({ children }: { children: React.ReactNode }) {
@@ -11,6 +11,7 @@ export default function AlunoLayout({ children }: { children: React.ReactNode })
   const links = [
     { href: '/aluno', label: 'Cardápio', icon: Utensils },
     { href: '/aluno/pedidos', label: 'Meus Pedidos', icon: ReceiptText },
+    { href: '/aluno/perfil', label: 'Meu Perfil', icon: UserCircle },
   ]
 
   return (
