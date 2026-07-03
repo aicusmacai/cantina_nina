@@ -52,7 +52,7 @@ export async function register(prevState: any, formData: FormData) {
     const email = `${username.trim().toLowerCase()}@nina.local`
     const supabase = await createClient()
 
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -76,9 +76,9 @@ export async function register(prevState: any, formData: FormData) {
       return { error: msg || 'Erro ao criar conta no banco de dados.', success: false }
     }
 
-    const { data: userData } = await supabase.auth.getUser()
-    if (userData?.user && role === 'aluno') {
-      const { error: updateError } = await supabase.from('usuarios').update({ turma }).eq('id', userData.user.id)
+    // Atualiza a turma usando o ID retornado pelo signUp (garante que funciona mesmo se a sessão não estiver ativa)
+    if (signUpData?.user && role === 'aluno' && turma) {
+      const { error: updateError } = await supabase.from('usuarios').update({ turma }).eq('id', signUpData.user.id)
       if (updateError) {
         console.error('Erro ao atualizar turma:', updateError)
       }
