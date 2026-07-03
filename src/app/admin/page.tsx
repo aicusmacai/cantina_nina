@@ -18,42 +18,39 @@ export default async function AdminDashboard() {
     ?.filter((p) => p.status === 'pago' || p.status === 'entregue')
     .reduce((acc, curr) => acc + Number(curr.valor_total), 0) || 0
 
-  const pedidosPendentes = pedidosData?.filter((p) => p.status === 'pendente').length || 0
-
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-900 mb-6">Visão Geral</h1>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-3xl font-black text-slate-900 tracking-tight">Visão Geral</h1>
+        <p className="text-slate-500 mt-1">Bem-vindo ao painel de gestão da cantina.</p>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex items-center gap-4">
-          <div className="bg-blue-50 text-blue-600 p-4 rounded-full">
-            <Users size={24} />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500">Total de Alunos</p>
-            <p className="text-2xl font-bold text-slate-900">{usuariosCount || 0}</p>
-          </div>
-        </div>
-
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex items-center gap-4">
-          <div className="bg-nina-red-50 text-nina-red-600 p-4 rounded-full">
-            <ShoppingBag size={24} />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500">Pedidos Pendentes</p>
-            <p className="text-2xl font-bold text-slate-900">{pedidosPendentes}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 shadow-xl shadow-blue-900/20 text-white relative overflow-hidden group transition-all hover:scale-[1.02]">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:bg-white/20 transition-colors"></div>
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <p className="text-blue-100 font-medium tracking-wide text-sm uppercase mb-2">Total de Alunos</p>
+              <p className="text-5xl font-black tracking-tighter">{usuariosCount || 0}</p>
+            </div>
+            <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl">
+              <Users size={32} className="text-white" />
+            </div>
           </div>
         </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex items-center gap-4">
-          <div className="bg-nina-green/10 text-nina-green p-4 rounded-full">
-            <DollarSign size={24} />
-          </div>
-          <div>
-            <p className="text-sm font-medium text-slate-500">Faturamento (Pagos)</p>
-            <p className="text-2xl font-bold text-slate-900">
-              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(faturamento)}
-            </p>
+        <div className="bg-gradient-to-br from-nina-red-600 to-orange-500 rounded-3xl p-8 shadow-xl shadow-nina-red-900/20 text-white relative overflow-hidden group transition-all hover:scale-[1.02]">
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:bg-white/20 transition-colors"></div>
+          <div className="relative z-10 flex items-center justify-between">
+            <div>
+              <p className="text-nina-red-100 font-medium tracking-wide text-sm uppercase mb-2">Faturamento (Pagos)</p>
+              <p className="text-4xl md:text-5xl font-black tracking-tighter">
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(faturamento)}
+              </p>
+            </div>
+            <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl hidden sm:block">
+              <DollarSign size={32} className="text-white" />
+            </div>
           </div>
         </div>
       </div>
