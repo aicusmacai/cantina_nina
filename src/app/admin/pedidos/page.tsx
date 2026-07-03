@@ -46,7 +46,7 @@ export default async function AdminPedidosPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {pedidos?.map((pedido) => (
-                <tr key={pedido.id} className="hover:bg-slate-50 transition-colors">
+                <tr key={pedido.id} className="border-b border-slate-100 hover:bg-slate-50/80 transition-colors duration-200">
                   <td className="p-4 text-sm text-slate-600">
                     {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
                   </td>

@@ -76,33 +76,35 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
               key={dia.id}
               onClick={() => toggleDia(dia.id)}
               className={`
-                relative p-4 rounded-xl border-2 text-left transition-all overflow-hidden flex flex-col justify-between
+                relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden flex flex-col justify-between group
                 ${isSelected 
-                  ? 'border-nina-red-500 bg-nina-red-50' 
-                  : 'border-slate-200 bg-white hover:border-slate-300'
+                  ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-50 to-white shadow-md shadow-nina-red-100 scale-[1.02] ring-4 ring-nina-red-500/10' 
+                  : 'border-slate-200 bg-white hover:border-nina-red-300 hover:shadow-lg hover:shadow-slate-200/50 hover:-translate-y-1'
                 }
               `}
             >
-              <div className="flex justify-between items-start mb-2">
-                <span className={`font-bold text-lg ${isSelected ? 'text-nina-red-700' : 'text-slate-700'}`}>
+              <div className="flex justify-between items-start mb-3">
+                <span className={`font-black text-xl transition-colors ${isSelected ? 'text-nina-red-700' : 'text-slate-700 group-hover:text-slate-900'}`}>
                   {dia.label}
                 </span>
                 <div className={`
-                  w-6 h-6 rounded-full border flex items-center justify-center shrink-0
-                  ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white' : 'border-slate-300'}
+                  w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300
+                  ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-slate-300 bg-slate-50 group-hover:border-nina-red-300'}
                 `}>
-                  {isSelected && <Check size={14} strokeWidth={3} />}
+                  {isSelected && <Check size={16} strokeWidth={3} className="animate-in zoom-in duration-200" />}
                 </div>
               </div>
 
-              <div className="flex items-start gap-2 mb-3">
-                <Utensils size={16} className={`shrink-0 mt-1 ${isSelected ? 'text-nina-red-500' : 'text-slate-400'}`} />
-                <p className={`text-sm font-medium ${isSelected ? 'text-nina-red-900' : 'text-slate-600'}`}>
+              <div className="flex items-start gap-3 mb-4">
+                <div className={`p-2 rounded-xl shrink-0 transition-colors ${isSelected ? 'bg-nina-red-100 text-nina-red-600' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'}`}>
+                  <Utensils size={18} />
+                </div>
+                <p className={`text-sm font-medium leading-snug mt-1 transition-colors ${isSelected ? 'text-nina-red-900' : 'text-slate-600'}`}>
                   {prato}
                 </p>
               </div>
 
-              <div className={`mt-auto text-sm font-bold ${isSelected ? 'text-nina-red-600' : 'text-slate-500'}`}>
+              <div className={`mt-auto text-base font-bold transition-colors ${isSelected ? 'text-nina-red-600' : 'text-slate-500 group-hover:text-slate-700'}`}>
                 R$ {preco.toFixed(2).replace('.', ',')}
               </div>
             </button>
@@ -110,25 +112,29 @@ export default function FormularioPedido({ cardapios }: { cardapios: Cardapio[] 
         })}
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between p-6 bg-slate-50 rounded-xl border border-slate-200">
-        <div className="text-center sm:text-left mb-4 sm:mb-0">
-          <p className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-1">
+      <div className="flex flex-col sm:flex-row items-center justify-between p-6 md:p-8 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl shadow-xl shadow-slate-900/20 text-white relative overflow-hidden">
+        {/* Elemento decorativo */}
+        <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-nina-red-500/20 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div className="text-center sm:text-left mb-6 sm:mb-0 relative z-10">
+          <p className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
             Total do Pedido
           </p>
-          <div className="text-4xl font-black text-slate-900">
-            <span className="text-2xl text-slate-400 font-bold mr-1">R$</span>
-            {valorTotal.toFixed(2).replace('.', ',')}
+          <div className="text-4xl md:text-5xl font-black text-white flex items-baseline justify-center sm:justify-start">
+            <span className="text-2xl text-slate-400 font-bold mr-2">R$</span>
+            <span className="tabular-nums tracking-tight">{valorTotal.toFixed(2).replace('.', ',')}</span>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
-            {diasSelecionados.length} {diasSelecionados.length === 1 ? 'dia selecionado' : 'dias selecionados'}
+          <p className="text-sm text-slate-400 mt-2 font-medium">
+            {diasSelecionados.length} {diasSelecionados.length === 1 ? 'dia selecionado' : 'dias selecionados'} na semana
           </p>
         </div>
 
-        <div className="w-full sm:w-auto flex flex-col items-center">
+        <div className="w-full sm:w-auto flex flex-col items-center relative z-10">
           <button
             onClick={handleSubmit}
             disabled={diasSelecionados.length === 0 || isPending}
-            className="w-full sm:w-auto bg-nina-red-600 hover:bg-nina-red-700 text-white font-bold py-4 px-10 rounded-xl transition-all disabled:opacity-50 disabled:hover:bg-nina-red-600 flex items-center justify-center gap-2 shadow-lg shadow-nina-red-200"
+            className="w-full sm:w-auto bg-gradient-to-r from-nina-red-600 to-nina-red-500 hover:from-nina-red-500 hover:to-nina-red-400 text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-3 shadow-lg shadow-nina-red-900/50 hover:shadow-nina-red-500/40 hover:-translate-y-1 active:translate-y-0"
           >
             {isPending ? (
               <>
