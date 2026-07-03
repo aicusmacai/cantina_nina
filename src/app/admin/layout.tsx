@@ -14,7 +14,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin/cardapios', label: 'Gerenciar Cardápios', icon: Utensils },
     { href: '/admin/usuarios', label: 'Todos os Usuários', icon: Users },
     { href: '/admin/pedidos', label: 'Todos os Pedidos', icon: ReceiptText },
-    { href: '/aluno', label: 'Simular Pedido (Aluno)', icon: User },
     { href: '/admin/configuracoes', label: 'Configurações', icon: Settings },
   ]
 

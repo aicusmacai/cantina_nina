@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { DollarSign, ShoppingBag, Users } from 'lucide-react'
+import Link from 'next/link'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
@@ -26,33 +27,37 @@ export default async function AdminDashboard() {
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 shadow-xl shadow-blue-900/20 text-white relative overflow-hidden group transition-all hover:scale-[1.02]">
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:bg-white/20 transition-colors"></div>
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <p className="text-blue-100 font-medium tracking-wide text-sm uppercase mb-2">Total de Alunos</p>
-              <p className="text-5xl font-black tracking-tighter">{usuariosCount || 0}</p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl">
-              <Users size={32} className="text-white" />
+        <Link href="/admin/usuarios" className="block cursor-pointer">
+          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 shadow-xl shadow-blue-900/20 text-white relative overflow-hidden group transition-all hover:scale-[1.02]">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:bg-white/20 transition-colors"></div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <p className="text-blue-100 font-medium tracking-wide text-sm uppercase mb-2">Total de Alunos</p>
+                <p className="text-5xl font-black tracking-tighter">{usuariosCount || 0}</p>
+              </div>
+              <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl">
+                <Users size={32} className="text-white" />
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
 
-        <div className="bg-gradient-to-br from-nina-red-600 to-orange-500 rounded-3xl p-8 shadow-xl shadow-nina-red-900/20 text-white relative overflow-hidden group transition-all hover:scale-[1.02]">
-          <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:bg-white/20 transition-colors"></div>
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <p className="text-nina-red-100 font-medium tracking-wide text-sm uppercase mb-2">Faturamento (Pagos)</p>
-              <p className="text-4xl md:text-5xl font-black tracking-tighter">
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(faturamento)}
-              </p>
-            </div>
-            <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl hidden sm:block">
-              <DollarSign size={32} className="text-white" />
+        <Link href="/admin/pedidos" className="block cursor-pointer">
+          <div className="bg-gradient-to-br from-nina-red-600 to-orange-500 rounded-3xl p-8 shadow-xl shadow-nina-red-900/20 text-white relative overflow-hidden group transition-all hover:scale-[1.02]">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl pointer-events-none group-hover:bg-white/20 transition-colors"></div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <p className="text-nina-red-100 font-medium tracking-wide text-sm uppercase mb-2">Faturamento (Pagos)</p>
+                <p className="text-4xl md:text-5xl font-black tracking-tighter">
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(faturamento)}
+                </p>
+              </div>
+              <div className="bg-white/20 backdrop-blur-md p-4 rounded-2xl hidden sm:block">
+                <DollarSign size={32} className="text-white" />
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   )
