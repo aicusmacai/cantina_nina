@@ -46,8 +46,7 @@ export default async function MeusPedidosPage() {
             const statusConfig = getStatusConfig(pedido.status)
             const StatusIcon = statusConfig.icon
             
-            return (
-              const cardContent = (
+            const cardContent = (
                 <>
                   <div>
                     <h3 className="font-bold text-slate-900 mb-1">
