@@ -36,17 +36,23 @@ export async function register(prevState: any, formData: FormData) {
     const nomeCompleto = formData.get('nome') as string
     const username = formData.get('username') as string
     const password = formData.get('password') as string
-    const turma = formData.get('turma') as string
+    const tipoConta = formData.get('tipoConta') as string
+    let turma = formData.get('turma') as string
     const role = 'aluno'
+
+    if (tipoConta === 'professor') {
+      turma = 'Professor / Funcionário'
+    }
 
     console.log('--- NOVO CADASTRO TENTATIVA ---')
     console.log('Nome:', nomeCompleto)
     console.log('Username:', username)
+    console.log('Tipo:', tipoConta)
     console.log('Role:', role)
 
-    if (!nomeCompleto || !username || !password) {
+    if (!nomeCompleto || !username || !password || (tipoConta === 'aluno' && !turma)) {
       console.log('ERRO: Faltam campos obrigatórios.')
-      return { error: 'Preencha todos os campos obrigatórios', success: false }
+      return { error: 'Preencha todos os campos obrigatórios, incluindo a Turma', success: false }
     }
 
     const email = `${username.trim().toLowerCase()}@nina.local`

@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, useEffect } from 'react'
+import { useActionState, useEffect, useState } from 'react'
 import { register } from '@/app/actions/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -9,6 +9,7 @@ const initialState = { error: '', success: false }
 
 export default function CadastroPage() {
   const [state, formAction, isPending] = useActionState(register, initialState)
+  const [tipoConta, setTipoConta] = useState('aluno')
   const router = useRouter()
 
   useEffect(() => {
@@ -51,19 +52,36 @@ export default function CadastroPage() {
             />
           </div>
 
-
-
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Turma
+            <label className="block text-sm font-medium text-slate-700 mb-2">
+              Você é aluno ou funcionário?
             </label>
-            <input 
-              name="turma"
-              type="text" 
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-nina-red-500 focus:border-nina-red-500 outline-none transition-all text-slate-900 bg-white"
-              placeholder="Ex: 8º Ano A"
-            />
+            <div className="flex gap-4">
+              <label className={`flex-1 border p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all ${tipoConta === 'aluno' ? 'border-nina-red-500 bg-nina-red-50 text-nina-red-700 font-bold shadow-sm' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
+                <input type="radio" name="tipoConta" value="aluno" className="hidden" checked={tipoConta === 'aluno'} onChange={() => setTipoConta('aluno')} />
+                Sou Aluno
+              </label>
+              <label className={`flex-1 border p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer transition-all ${tipoConta === 'professor' ? 'border-nina-red-500 bg-nina-red-50 text-nina-red-700 font-bold shadow-sm' : 'border-slate-200 text-slate-500 hover:bg-slate-50'}`}>
+                <input type="radio" name="tipoConta" value="professor" className="hidden" checked={tipoConta === 'professor'} onChange={() => setTipoConta('professor')} />
+                Sou Professor
+              </label>
+            </div>
           </div>
+
+          {tipoConta === 'aluno' && (
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">
+                Turma
+              </label>
+              <input 
+                name="turma"
+                type="text" 
+                required
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-nina-red-500 focus:border-nina-red-500 outline-none transition-all text-slate-900 bg-white"
+                placeholder="Ex: 8º Ano A"
+              />
+            </div>
+          )}
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">
