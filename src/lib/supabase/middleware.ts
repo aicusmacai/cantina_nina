@@ -34,6 +34,10 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname
 
   // Proteção de rotas
+  if (path.startsWith('/api')) {
+    return supabaseResponse
+  }
+
   const isAuthRoute = path.startsWith('/login') || path.startsWith('/cadastro')
   
   if (!user && !isAuthRoute && path !== '/') {
