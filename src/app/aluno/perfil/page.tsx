@@ -93,10 +93,7 @@ export default function PerfilPage() {
           </div>
         </div>
         
-        <h2 className="text-2xl font-black text-slate-900">{userData?.nome_completo}</h2>
-        <span className="inline-block bg-slate-100 text-slate-500 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mt-2 mb-6">
-          {userData?.role}
-        </span>
+        <h2 className="text-2xl font-black text-slate-900 mb-6">{userData?.nome_completo}</h2>
 
         <div className="space-y-4 text-left">
           <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
