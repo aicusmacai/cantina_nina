@@ -32,7 +32,7 @@ export default function CadastroPage() {
           <h1 className="text-2xl font-bold text-slate-900">Criar Conta</h1>
           <p className="text-slate-500 mt-2">
             Já tem uma conta?{' '}
-            <Link href="/login" className="text-nina-red-600 hover:text-nina-red-700 font-medium">
+            <Link href="/home?login=true" className="text-nina-red-600 hover:text-nina-red-700 font-medium">
               Faça login
             </Link>
           </p>
