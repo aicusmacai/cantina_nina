@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef, useEffect } from 'react'
 import { MoreVertical, Trash2, KeyRound, UserCog, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { deleteUserAccount, updateUsuarioAuth } from '@/app/actions/admin-users'
 
@@ -14,6 +14,24 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
   // Form states
   const [newPassword, setNewPassword] = useState('')
   const [newLogin, setNewLogin] = useState(currentEmail.split('@')[0])
+  
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+    
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
 
   function fecharModal() {
     setModalType('none')
@@ -72,7 +90,7 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
