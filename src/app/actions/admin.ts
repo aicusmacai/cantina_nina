@@ -79,8 +79,8 @@ export async function salvarConfiguracoes(formData: FormData) {
   })
 
   if (error) {
-    throw new Error(error.message)
+    return { error: error.message, success: false }
   }
 
-  revalidatePath('/admin/configuracoes')
+  return { success: true }
 }

@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Check, ShoppingBag, Loader2, Utensils } from 'lucide-react'
 import { criarPedido } from '@/app/actions/aluno'
 import { useRouter } from 'next/navigation'
+import { motion } from 'framer-motion'
 
 type Cardapio = {
   id: string
@@ -78,14 +79,16 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
           const mostrarDescontoItem = descontoPercentual > 0
 
           return (
-            <button
+            <motion.button
               key={dia.id}
               onClick={() => toggleDia(dia.id)}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               className={`
-                relative p-5 rounded-2xl border-2 text-left transition-all duration-300 overflow-hidden flex flex-col justify-between group
+                relative p-5 rounded-2xl border-2 text-left transition-colors overflow-hidden flex flex-col justify-between group
                 ${isSelected 
-                  ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-50 to-white shadow-md shadow-nina-red-100 scale-[1.02] ring-4 ring-nina-red-500/10' 
-                  : 'border-slate-200 bg-white hover:border-nina-red-300 hover:shadow-lg hover:shadow-slate-200/50 hover:-translate-y-1'
+                  ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-50 to-white shadow-md shadow-nina-red-100 ring-4 ring-nina-red-500/10' 
+                  : 'border-slate-200 bg-white hover:border-nina-red-300 hover:shadow-lg hover:shadow-slate-200/50'
                 }
               `}
             >
@@ -124,7 +127,7 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
                   </div>
                 )}
               </div>
-            </button>
+            </motion.button>
           )
         })}
       </div>

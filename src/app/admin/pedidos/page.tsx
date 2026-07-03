@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { ReceiptText, Search } from 'lucide-react'
+import { MotionTr, staggerContainer, fadeItem } from '@/components/Motion'
 
 export default async function AdminPedidosPage() {
   const supabase = await createClient()
@@ -23,7 +24,7 @@ export default async function AdminPedidosPage() {
   }
 
   return (
-    <div>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl font-bold text-slate-900 mb-2">Todos os Pedidos</h1>
@@ -45,8 +46,14 @@ export default async function AdminPedidosPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {pedidos?.map((pedido) => (
-                <tr key={pedido.id} className="border-b border-slate-100 hover:bg-slate-50/80 transition-colors duration-200">
+              {pedidos?.map((pedido, index) => (
+                <MotionTr 
+                  key={pedido.id} 
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.05, duration: 0.3 }}
+                  className="border-b border-slate-100 hover:bg-slate-50/80 transition-colors duration-200"
+                >
                   <td className="p-4 text-sm text-slate-600">
                     {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
                   </td>
@@ -77,7 +84,7 @@ export default async function AdminPedidosPage() {
                       {pedido.status.charAt(0).toUpperCase() + pedido.status.slice(1)}
                     </span>
                   </td>
-                </tr>
+                </MotionTr>
               ))}
 
               {!pedidos?.length && (

@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { UserCircle } from 'lucide-react'
 import BuscaUsuarios from './BuscaUsuarios'
 import AcoesUsuario from './AcoesUsuario'
+import { MotionDiv, staggerContainer, fadeItem } from '@/components/Motion'
 
 export default async function UsuariosPage(props: { searchParams: Promise<{ q?: string }> }) {
   const searchParams = await props.searchParams
@@ -34,47 +35,54 @@ export default async function UsuariosPage(props: { searchParams: Promise<{ q?: 
         <BuscaUsuarios />
       </div>
 
-      <div className="grid gap-4">
+      <MotionDiv 
+        className="grid gap-4"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
         {usuarios && usuarios.length > 0 ? (
           usuarios.map((user) => {
             const isProfessor = user.turma === 'Professor / Funcionário' || user.turma === 'Professor'
             const displayRole = isProfessor ? 'professor' : user.role
             
             return (
-            <div key={user.id} className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300 group">
-              
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 group-hover:bg-nina-red-50 group-hover:text-nina-red-600 transition-colors">
-                  <UserCircle size={28} />
-                </div>
+            <MotionDiv key={user.id} variants={fadeItem}>
+              <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm hover:shadow-md transition-all duration-300 group">
                 
-                <div>
-                  <h3 className="font-bold text-slate-900 text-lg flex items-center gap-3">
-                    {user.nome_completo}
-                    <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${getRoleBadgeColor(displayRole)}`}>
-                      {displayRole}
-                    </span>
-                  </h3>
-                  <div className="flex items-center gap-4 text-sm text-slate-500 mt-1">
-                    <span className="flex items-center gap-1">
-                      <span className="font-medium text-slate-400">Login:</span> 
-                      {user.email.split('@')[0]}
-                    </span>
-                    {!isProfessor && (
-                      <span className="flex items-center gap-1">
-                        <span className="font-medium text-slate-400">Turma:</span> 
-                        {user.turma || 'N/A'}
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center shrink-0 group-hover:bg-nina-red-50 group-hover:text-nina-red-600 transition-colors">
+                    <UserCircle size={28} />
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-bold text-slate-900 text-lg flex items-center gap-3">
+                      {user.nome_completo}
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${getRoleBadgeColor(displayRole)}`}>
+                        {displayRole}
                       </span>
-                    )}
+                    </h3>
+                    <div className="flex items-center gap-4 text-sm text-slate-500 mt-1">
+                      <span className="flex items-center gap-1">
+                        <span className="font-medium text-slate-400">Login:</span> 
+                        {user.email.split('@')[0]}
+                      </span>
+                      {!isProfessor && (
+                        <span className="flex items-center gap-1">
+                          <span className="font-medium text-slate-400">Turma:</span> 
+                          {user.turma || 'N/A'}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex justify-end mt-2 sm:mt-0">
-                <AcoesUsuario userId={user.id} currentEmail={user.email} />
+                <div className="flex justify-end mt-2 sm:mt-0">
+                  <AcoesUsuario userId={user.id} currentEmail={user.email} />
+                </div>
+                
               </div>
-              
-            </div>
+            </MotionDiv>
             )
           })
         ) : (
@@ -84,7 +92,7 @@ export default async function UsuariosPage(props: { searchParams: Promise<{ q?: 
             <p className="text-slate-500">Tente ajustar o termo de pesquisa</p>
           </div>
         )}
-      </div>
+      </MotionDiv>
     </div>
   )
 }
