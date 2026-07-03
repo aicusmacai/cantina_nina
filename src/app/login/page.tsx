@@ -20,10 +20,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 w-full max-w-md relative animate-in fade-in slide-in-from-bottom-8 duration-700">
-        <Link href="/home" className="absolute top-6 left-6 text-slate-400 hover:text-nina-red-600 transition-colors text-sm font-medium flex items-center gap-1">
+        <a href="/home" className="absolute top-6 left-6 text-slate-400 hover:text-nina-red-600 transition-colors text-sm font-medium flex items-center gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
           Voltar
-        </Link>
+        </a>
         <div className="text-center mb-8 mt-4">
           <div className="w-16 h-16 bg-nina-red-50 text-nina-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" x2="3" y1="12" y2="12"/></svg>
