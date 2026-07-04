@@ -12,9 +12,9 @@ export default async function AdminCardapiosPage() {
   const dias = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-900 mb-2">Cardápio Fixo da Cantina</h1>
-      <p className="text-slate-500 mb-8">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <h1 className="text-2xl font-bold text-[#383b32] mb-2">Cardápio Fixo da Cantina</h1>
+      <p className="text-nina-olive-400 mb-8">
         Defina o prato principal para cada dia da semana. Este cardápio se repetirá automaticamente todas as semanas.
       </p>
 

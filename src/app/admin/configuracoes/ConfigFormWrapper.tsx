@@ -31,12 +31,15 @@ export default function ConfigFormWrapper({ config }: { config: any }) {
     }
   }
 
+  const inputClasses = "appearance-none relative block w-full px-4 py-3 bg-[#fdfcfa] border border-[#e8e3d5] placeholder-[#383b32]/30 text-[#383b32] font-medium rounded-xl focus:outline-none focus:ring-2 focus:ring-nina-gold-400/50 focus:border-nina-gold-400 focus:bg-white transition-all shadow-sm sm:text-sm"
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-8 solid-card p-8 md:p-10 mt-4 relative">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-nina-gold-400/5 rounded-full blur-3xl -z-10 translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
       <input type="hidden" name="id" value={config?.id || 1} />
       
       <div>
-        <label htmlFor="preco_padrao" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="preco_padrao" className="block text-sm font-bold text-[#383b32] mb-2">
           Preço Padrão do Prato (R$)
         </label>
         <input
@@ -47,13 +50,13 @@ export default function ConfigFormWrapper({ config }: { config: any }) {
           min="0"
           required
           defaultValue={config?.preco_padrao || 15.00}
-          className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-nina-red-500 focus:border-nina-red-500 sm:text-sm"
+          className={inputClasses}
         />
-        <p className="text-xs text-slate-500 mt-1">Este valor será sugerido ao criar novos cardápios.</p>
+        <p className="text-xs text-[#383b32]/50 mt-2 font-medium">Este valor será sugerido ao criar novos cardápios.</p>
       </div>
 
       <div>
-        <label htmlFor="horario_limite_pedido" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="horario_limite_pedido" className="block text-sm font-bold text-[#383b32] mb-2">
           Horário Limite para Pedidos
         </label>
         <input
@@ -62,13 +65,13 @@ export default function ConfigFormWrapper({ config }: { config: any }) {
           name="horario_limite_pedido"
           required
           defaultValue={config?.horario_limite_pedido || '08:00'}
-          className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-nina-red-500 focus:border-nina-red-500 sm:text-sm"
+          className={inputClasses}
         />
-        <p className="text-xs text-slate-500 mt-1">Até que horas do dia anterior ou do próprio dia o aluno pode fazer/cancelar o pedido.</p>
+        <p className="text-xs text-[#383b32]/50 mt-2 font-medium">Até que horas do dia anterior ou do próprio dia o aluno pode fazer/cancelar o pedido.</p>
       </div>
 
       <div>
-        <label htmlFor="dias_antecedencia" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="dias_antecedencia" className="block text-sm font-bold text-[#383b32] mb-2">
           Dias de Antecedência
         </label>
         <input
@@ -78,15 +81,15 @@ export default function ConfigFormWrapper({ config }: { config: any }) {
           min="0"
           required
           defaultValue={config?.dias_antecedencia || 1}
-          className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-nina-red-500 focus:border-nina-red-500 sm:text-sm"
+          className={inputClasses}
         />
-        <p className="text-xs text-slate-500 mt-1">Quantos dias de antecedência para o limite de horário. (1 = dia anterior, 0 = no mesmo dia).</p>
+        <p className="text-xs text-[#383b32]/50 mt-2 font-medium">Quantos dias de antecedência para o limite de horário. (1 = dia anterior, 0 = no mesmo dia).</p>
       </div>
 
-      <div className="pt-4 border-t border-slate-100"></div>
+      <div className="pt-6 border-t border-[#e8e3d5]/50"></div>
 
       <div>
-        <label htmlFor="desconto_professor_percentual" className="block text-sm font-medium text-slate-700 mb-1">
+        <label htmlFor="desconto_professor_percentual" className="block text-sm font-bold text-[#383b32] mb-2">
           Desconto para Professores e Funcionários (%)
         </label>
         <input
@@ -98,16 +101,16 @@ export default function ConfigFormWrapper({ config }: { config: any }) {
           max="100"
           required
           defaultValue={config?.desconto_professor_percentual || 0}
-          className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-nina-red-500 focus:border-nina-red-500 sm:text-sm"
+          className={inputClasses}
         />
-        <p className="text-xs text-slate-500 mt-1">Porcentagem de desconto aplicada automaticamente nos pedidos de professores.</p>
+        <p className="text-xs text-[#383b32]/50 mt-2 font-medium">Porcentagem de desconto aplicada automaticamente nos pedidos de professores.</p>
       </div>
 
-      <div className="pt-4 border-t border-slate-100 flex justify-end">
+      <div className="pt-8 flex justify-end">
         <button
           type="submit"
           disabled={isPending}
-          className="flex items-center gap-2 px-6 py-2 bg-nina-red-600 text-white font-medium rounded-lg hover:bg-nina-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-nina-red-500 transition-all disabled:opacity-50"
+          className="flex items-center gap-2 px-8 py-3.5 bg-nina-gold-400 text-nina-olive-900 font-bold text-sm uppercase tracking-wide rounded-xl hover:bg-nina-gold-500 hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-nina-gold-400 transition-all disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
           {isPending ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
           {isPending ? 'Salvando...' : 'Salvar Configurações'}

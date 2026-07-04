@@ -10,29 +10,24 @@ export default async function FuncionarioDashboard(
   const searchParams = await props.searchParams;
   const supabase = await createClient()
 
-  // Determinar o fuso horário de Brasília
   const agoraBRT = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }))
   const diaSemanaAtual = agoraBRT.getDay()
   
-  // Pegar o dia selecionado via URL ou usar o dia de hoje (Brasília)
   const diaQuery = searchParams.dia
   let diaSemana = diaQuery ? parseInt(diaQuery) : diaSemanaAtual
   
-  // Se for fim de semana e não tiver selecionado dia, mostra a segunda-feira por padrão
   if (!diaQuery && (diaSemana === 0 || diaSemana === 6)) {
     diaSemana = 1
   }
 
   const nomesDias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado']
 
-  // Obter o início da semana (Segunda-feira)
   const startOfWeek = new Date(agoraBRT)
   const diaSemAtual = startOfWeek.getDay()
   const diff = startOfWeek.getDate() - diaSemAtual + (diaSemAtual === 0 ? -6 : 1)
   startOfWeek.setDate(diff)
   startOfWeek.setHours(0, 0, 0, 0)
 
-  // Buscar todos os pedidos ativos onde o array dias_semana contém o dia selecionado e é desta semana
   const { data: pedidos } = await supabase
     .from('pedidos')
     .select(`
@@ -45,7 +40,6 @@ export default async function FuncionarioDashboard(
     .gte('created_at', startOfWeek.toISOString())
     .order('created_at', { ascending: true })
 
-  // Buscar o prato do dia selecionado
   const { data: cardapioHoje } = await supabase
     .from('cardapios')
     .select('prato_principal')
@@ -55,86 +49,135 @@ export default async function FuncionarioDashboard(
   const pratoHoje = cardapioHoje?.prato_principal || 'Prato não definido'
 
   return (
-    <div className="print:bg-white print:p-0">
-      <div className="flex flex-col gap-6 mb-8 print:mb-4">
+    <div className="print:bg-white print:p-0 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+      {/* ── Screen header (hidden on print) ── */}
+      <div className="flex flex-col gap-6 mb-8 print:hidden">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-stone-900 mb-1 print:text-xl">Lista de Entregas</h1>
-            <p className="text-stone-500 print:hidden">
-              Acompanhe os alunos que devem retirar refeições na cantina.
-            </p>
+            <h1 className="text-2xl font-bold text-[#383b32] mb-1">Lista de Entregas</h1>
+            <p className="text-stone-500">Acompanhe os alunos que devem retirar refeições na cantina.</p>
           </div>
-          
           <div className="flex items-center justify-between md:justify-end gap-4 w-full md:w-auto">
             <BotaoImprimir />
           </div>
         </div>
-        
         <FiltroDias diaAtual={diaSemanaAtual === 0 || diaSemanaAtual === 6 ? 1 : diaSemanaAtual} />
       </div>
 
-      <div className="hidden print:flex items-center gap-4 border-b border-slate-300 pb-4 mb-6">
-        <div className="w-12 h-12 bg-nina-red-600 text-white flex items-center justify-center rounded-xl font-bold">N</div>
-        <div>
-          <h2 className="font-bold text-lg uppercase">CANTINA Nina</h2>
-          <p className="text-sm text-slate-600">Relatório de Entregas</p>
+      {/* ── THERMAL PRINT layout (hidden on screen) ── */}
+      <div
+        className="hidden print:block"
+        style={{ fontFamily: 'monospace', fontSize: '11px', width: '72mm', margin: '0 auto', color: '#000' }}
+      >
+        {/* Header */}
+        <div style={{ textAlign: 'center', borderBottom: '2px solid #000', paddingBottom: '4px', marginBottom: '6px' }}>
+          <div style={{ fontSize: '15px', fontWeight: 'bold', letterSpacing: '2px' }}>CANTINA NINA</div>
+          <div style={{ fontSize: '10px' }}>Lista de Entregas</div>
+          <div style={{ fontSize: '10px', marginTop: '2px' }}>
+            {nomesDias[diaSemana]} &mdash; {agoraBRT.toLocaleDateString('pt-BR')}
+          </div>
+          <div style={{ fontSize: '10px', fontWeight: 'bold', marginTop: '2px' }}>
+            Prato: {pratoHoje}
+          </div>
+          <div style={{ fontSize: '10px', marginTop: '2px' }}>
+            Total: {pedidos?.length ?? 0} pedido(s)
+          </div>
         </div>
-        <div className="text-xs mt-1">Dia: {agoraBRT.toLocaleDateString('pt-BR')}</div>
-        <div className="text-xs mt-1 font-bold">Prato: {pratoHoje}</div>
+
+        {/* Numbered list */}
+        {pedidos && pedidos.length > 0 ? (
+          pedidos.map((pedido, idx) => (
+            <div
+              key={pedido.id}
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '4px',
+                borderBottom: '1px dashed #999',
+                paddingTop: '5px',
+                paddingBottom: '5px',
+              }}
+            >
+              <span style={{ minWidth: '18px', fontWeight: 'bold' }}>{idx + 1}.</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 'bold', textTransform: 'uppercase', fontSize: '11px' }}>
+                  {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
+                </div>
+                <div style={{ fontSize: '9px', color: '#444' }}>
+                  {(pedido.usuarios as any)?.turma || '-'}
+                </div>
+              </div>
+              {/* Manual check box */}
+              <div style={{ width: '13px', height: '13px', border: '1px solid #000', marginTop: '1px', flexShrink: 0 }}></div>
+            </div>
+          ))
+        ) : (
+          <div style={{ textAlign: 'center', padding: '10px 0', fontSize: '10px' }}>
+            Nenhum pedido para este dia.
+          </div>
+        )}
+
+        {/* Footer */}
+        <div style={{ borderTop: '2px solid #000', marginTop: '8px', paddingTop: '4px', textAlign: 'center', fontSize: '9px' }}>
+          Impresso: {agoraBRT.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+        </div>
       </div>
 
-      {diaSemana === 0 || diaSemana === 6 ? (
-        <div className="glass-sand p-10 rounded-3xl text-center print:hidden flex flex-col items-center justify-center text-stone-500 border border-stone-200/50 shadow-soft-warm">
-          <Calendar size={48} className="text-stone-300 mb-4" />
-          <h2 className="text-xl font-bold text-stone-700 mb-2">Fim de Semana</h2>
-          <p className="text-stone-500">A cantina não opera aos fins de semana.</p>
-        </div>
-      ) : !pedidos || pedidos.length === 0 ? (
-        <div className="glass-sand p-12 rounded-3xl text-center print:border-none print:p-0 flex flex-col items-center justify-center border border-stone-200/50 shadow-soft-warm">
-          <AlertCircle size={48} className="text-stone-300 mb-4 print:hidden" />
-          <h2 className="text-xl font-bold text-stone-700 mb-2 print:text-sm">Nenhuma entrega pendente</h2>
-          <p className="text-stone-500 print:hidden max-w-sm">Nenhum aluno agendou refeição para este dia ou todas já foram entregues.</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 print:gap-1 print:grid-cols-1 relative z-10">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-nina-red-100 rounded-full blur-3xl opacity-60 -z-10 pointer-events-none"></div>
-          {pedidos.map((pedido) => (
-            <div 
-              key={pedido.id} 
-              className="bg-white/90 backdrop-blur-sm p-6 rounded-3xl flex flex-col justify-between gap-6 hover:shadow-xl hover:shadow-stone-200/50 hover:-translate-y-1 transition-all duration-300 border border-stone-200/50 print:border-b print:border-black print:border-dashed print:rounded-none print:shadow-none print:p-2 print:gap-1 group relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-nina-red-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-bl-full pointer-events-none"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-4 print:mb-1">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-stone-100 to-stone-200 shadow-inner border border-stone-200/80 text-stone-500 flex items-center justify-center shrink-0 font-bold text-xl uppercase group-hover:from-nina-red-100 group-hover:to-white group-hover:text-nina-red-600 group-hover:border-nina-red-200 transition-all duration-300 print:hidden">
-                    {((pedido.usuarios as any)?.nome_completo || '?').charAt(0).toUpperCase()}
+      {/* ── Normal screen list (hidden on print) ── */}
+      <div className="print:hidden">
+        {diaSemana === 0 || diaSemana === 6 ? (
+          <div className="solid-card p-10 text-center flex flex-col items-center justify-center text-nina-olive-400">
+            <Calendar size={48} className="text-nina-olive-300 mb-4" />
+            <h2 className="text-xl font-bold text-[#383b32] mb-2">Fim de Semana</h2>
+            <p className="text-nina-olive-400">A cantina não opera aos fins de semana.</p>
+          </div>
+        ) : !pedidos || pedidos.length === 0 ? (
+          <div className="solid-card p-12 text-center flex flex-col items-center justify-center">
+            <AlertCircle size={48} className="text-nina-olive-300 mb-4" />
+            <h2 className="text-xl font-bold text-[#383b32] mb-2">Nenhuma entrega pendente</h2>
+            <p className="text-nina-olive-400 max-w-sm">Nenhum aluno agendou refeição para este dia ou todas já foram entregues.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 relative z-10">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-nina-gold-400/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+            {pedidos.map((pedido) => (
+              <div
+                key={pedido.id}
+                className="solid-card p-6 flex flex-col justify-between gap-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
+              >
+                <div className="relative z-10">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full bg-[#e8e3d5] text-[#383b32] flex items-center justify-center shrink-0 font-bold text-xl uppercase group-hover:bg-nina-gold-400 transition-all duration-300">
+                      {((pedido.usuarios as any)?.nome_completo || '?').charAt(0).toUpperCase()}
+                    </div>
+                    <h3 className="font-bold text-[#383b32] text-lg uppercase">
+                      {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
+                    </h3>
                   </div>
-                  <h3 className="font-bold text-stone-800 text-lg print:text-sm uppercase print:leading-tight">
-                    {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
-                  </h3>
+                  
+                  <div className="flex flex-col gap-2 text-sm text-[#383b32]/70 bg-[#e8e3d5]/30 p-4 rounded-xl border border-[#e8e3d5]">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-nina-olive-400">Turma</span>
+                      <span className="font-bold text-[#383b32] bg-[#f4f0e6] shadow-sm px-3 py-1 rounded-lg border border-[#e8e3d5]">
+                        {(pedido.usuarios as any)?.turma || '-'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-nina-olive-400">Prato</span>
+                      <span className="text-[#383b32] font-medium line-clamp-1 text-right ml-4">{pratoHoje}</span>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="flex flex-col gap-2 text-sm text-stone-500 print:text-xs print:text-black bg-stone-50/80 p-4 rounded-2xl print:bg-transparent print:p-0 print:gap-0 border border-stone-100">
-                  <div className="flex justify-between items-center print:justify-start print:gap-2">
-                    <span className="font-semibold text-stone-400 print:hidden">Turma</span>
-                    <span className="hidden print:inline font-bold">Turma:</span>
-                    <span className="font-bold text-stone-700 bg-white shadow-sm px-3 py-1 rounded-lg border border-stone-200 print:border-none print:bg-transparent print:px-0 print:text-black">{(pedido.usuarios as any)?.turma || '-'}</span>
-                  </div>
-                  <div className="flex justify-between items-center print:hidden">
-                    <span className="font-semibold text-stone-400">Prato</span>
-                    <span className="text-stone-700 font-medium line-clamp-1 text-right ml-4">{pratoHoje}</span>
-                  </div>
-                </div>
-              </div>
 
-              <div className="print:hidden mt-auto relative z-10">
-                <BotaoEntregar pedidoId={pedido.id} />
+                <div className="mt-auto relative z-10">
+                  <BotaoEntregar pedidoId={pedido.id} />
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

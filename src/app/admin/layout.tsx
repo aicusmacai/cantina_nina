@@ -9,24 +9,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname()
 
   const links = [
-    { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/admin/entregas', label: 'Entregas de Hoje', icon: CheckSquare },
-    { href: '/admin/cardapios', label: 'Gerenciar Cardápios', icon: Utensils },
-    { href: '/admin/usuarios', label: 'Todos os Usuários', icon: Users },
-    { href: '/admin/pedidos', label: 'Todos os Pedidos', icon: ReceiptText },
-    { href: '/admin/configuracoes', label: 'Configurações', icon: Settings },
+    { href: '/admin', label: 'Dashboard', shortLabel: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/entregas', label: 'Entregas de Hoje', shortLabel: 'Entregas', icon: CheckSquare },
+    { href: '/admin/cardapios', label: 'Gerenciar Cardápios', shortLabel: 'Cardápios', icon: Utensils },
+    { href: '/admin/usuarios', label: 'Todos os Usuários', shortLabel: 'Usuários', icon: Users },
+    { href: '/admin/pedidos', label: 'Todos os Pedidos', shortLabel: 'Pedidos', icon: ReceiptText },
+    { href: '/admin/configuracoes', label: 'Configurações', shortLabel: 'Config', icon: Settings },
   ]
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-transparent md:p-6 gap-6">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#f4f0e6] relative">
       {/* Sidebar (Desktop only) */}
-      <aside className="hidden md:flex w-72 glass-sand shadow-xl shadow-stone-200/50 rounded-3xl p-6 flex-col print:hidden sticky top-6 h-[calc(100vh-3rem)] overflow-y-auto custom-scrollbar">
-        <div className="mb-8 px-2 flex flex-col gap-1">
-          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-nina-red-600 to-red-400 drop-shadow-sm tracking-tight">Cantina Nina</h2>
-          <p className="text-xs font-bold text-stone-500 uppercase tracking-widest">Painel de Gestão</p>
+      <aside className="hidden md:flex w-72 bg-nina-olive-700 p-6 flex-col print:hidden sticky top-0 h-screen overflow-y-auto custom-scrollbar shadow-xl z-20">
+        <div className="mb-10 px-2 flex flex-col gap-1">
+          <div className="flex items-center gap-2 text-nina-gold-400 mb-1">
+            <div className="bg-nina-gold-400 text-nina-olive-900 rounded-md p-1">
+              <Utensils size={20} />
+            </div>
+            <h2 className="text-2xl font-black text-[#f4f0e6] tracking-tight">Cantina Nina</h2>
+          </div>
+          <p className="text-[10px] font-bold text-nina-olive-300 uppercase tracking-widest pl-10">Painel de Gestão</p>
         </div>
         
-        <nav className="flex-1 space-y-2">
+        <nav className="flex-1 space-y-1">
           {links.map((link) => {
             const isActive = pathname === link.href
             const Icon = link.icon
@@ -34,27 +39,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-300 font-bold relative overflow-hidden group ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 font-medium ${
                   isActive 
-                    ? 'bg-gradient-to-r from-nina-red-600 to-nina-red-500 text-white shadow-lg shadow-nina-red-500/20' 
-                    : 'text-stone-500 hover:bg-stone-100/50 hover:text-stone-900 border border-transparent hover:border-stone-200/50'
+                    ? 'bg-nina-gold-400 text-nina-olive-900 shadow-sm' 
+                    : 'text-nina-olive-200 hover:bg-nina-olive-600 hover:text-[#f4f0e6]'
                 }`}
               >
-                <div className={`absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out ${isActive ? 'block' : 'hidden'}`}></div>
-                <Icon size={20} className={`${isActive ? 'text-white' : 'text-stone-400 group-hover:text-nina-red-500 transition-colors'}`} />
-                <span className="relative z-10">{link.label}</span>
+                <Icon size={18} className={`${isActive ? 'text-nina-olive-900' : 'text-nina-olive-300'}`} />
+                <span>{link.label}</span>
               </Link>
             )
           })}
         </nav>
 
-        <div className="mt-8 border-t border-stone-200/50 pt-4">
+        <div className="mt-8 border-t border-nina-olive-600 pt-4">
           <form action={logout}>
             <button
               type="submit"
-              className="flex items-center gap-3 px-4 py-3.5 w-full rounded-2xl text-stone-500 hover:bg-red-50 hover:text-red-600 transition-all duration-300 font-bold border border-transparent hover:border-red-100"
+              className="flex items-center gap-3 px-4 py-3 w-full rounded-lg text-nina-olive-200 hover:bg-nina-olive-600 hover:text-[#f4f0e6] transition-all duration-300 font-medium"
             >
-              <LogOut size={20} />
+              <LogOut size={18} />
               Sair do Sistema
             </button>
           </form>
@@ -62,30 +66,65 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 bg-white/60 backdrop-blur-md md:shadow-xl md:shadow-stone-200/30 md:rounded-3xl p-4 md:p-10 pb-24 md:pb-10 print:p-0 print:shadow-none print:bg-transparent min-h-screen md:min-h-0 border border-white relative z-10">
+      <main className="flex-1 p-4 md:p-10 pb-28 md:pb-10 print:p-0 min-h-screen text-[#383b32] relative z-10 w-full overflow-x-hidden">
         {children}
       </main>
 
       {/* Mobile Navigation (Bottom) */}
-      <nav className="md:hidden glass-sand fixed bottom-0 left-0 right-0 flex justify-around p-2 pb-safe z-50 rounded-t-3xl border-t border-stone-200/50 shadow-[0_-8px_30px_rgba(139,115,85,0.1)] overflow-x-auto gap-2">
-        {links.map((link) => {
-          const isActive = pathname === link.href
-          const Icon = link.icon
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`flex flex-col items-center justify-center gap-1 p-3 min-w-[72px] transition-all duration-300 rounded-2xl ${
-                isActive 
-                  ? 'text-nina-red-600 bg-nina-red-50 shadow-sm' 
-                  : 'text-stone-500 hover:text-stone-800 hover:bg-stone-100/50'
-              }`}
+      <nav className="md:hidden bg-nina-olive-700 fixed bottom-0 left-0 right-0 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.25)] print:hidden">
+        <div className="grid grid-cols-4 gap-0 px-1 pt-1 pb-safe">
+          {/* Row 1: first 4 items */}
+          {links.slice(0, 4).map((link) => {
+            const isActive = pathname === link.href
+            const Icon = link.icon
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex flex-col items-center justify-center gap-0.5 py-2 transition-all duration-200 rounded-xl ${
+                  isActive 
+                    ? 'text-nina-olive-900 bg-nina-gold-400' 
+                    : 'text-nina-olive-200'
+                }`}
+              >
+                <Icon size={19} />
+                <span className="text-[9px] font-bold text-center leading-tight">{(link as any).shortLabel}</span>
+              </Link>
+            )
+          })}
+        </div>
+        <div className="grid grid-cols-4 gap-0 px-1 pb-2">
+          {/* Row 2: last 2 items + logout */}
+          {links.slice(4).map((link) => {
+            const isActive = pathname === link.href
+            const Icon = link.icon
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`flex flex-col items-center justify-center gap-0.5 py-2 transition-all duration-200 rounded-xl ${
+                  isActive 
+                    ? 'text-nina-olive-900 bg-nina-gold-400' 
+                    : 'text-nina-olive-200'
+                }`}
+              >
+                <Icon size={19} />
+                <span className="text-[9px] font-bold text-center leading-tight">{(link as any).shortLabel}</span>
+              </Link>
+            )
+          })}
+          <form action={logout}>
+            <button
+              type="submit"
+              className="flex flex-col items-center justify-center gap-0.5 w-full py-2 text-nina-olive-200 rounded-xl"
             >
-              <Icon size={22} className={isActive ? 'scale-110 drop-shadow-sm transition-transform text-nina-red-500' : ''} />
-              <span className="text-[10px] font-bold text-center leading-tight whitespace-nowrap">{link.label}</span>
-            </Link>
-          )
-        })}
+              <LogOut size={19} />
+              <span className="text-[9px] font-bold">Sair</span>
+            </button>
+          </form>
+          {/* spacer to keep last row balanced */}
+          <div />
+        </div>
       </nav>
     </div>
   )

@@ -37,11 +37,18 @@ export async function register(prevState: any, formData: FormData) {
     const username = formData.get('username') as string
     const password = formData.get('password') as string
     const tipoConta = formData.get('tipoConta') as string
-    let turma = formData.get('turma') as string
+    
+    // Ler ano e turma se for aluno
+    const ano = formData.get('ano') as string
+    const turma_letra = formData.get('turma_letra') as string
+    
+    let turma = ''
     const role = 'aluno'
 
     if (tipoConta === 'professor') {
       turma = 'Professor'
+    } else if (tipoConta === 'aluno' && ano && turma_letra) {
+      turma = `${ano} ${turma_letra}`
     }
 
     console.log('--- NOVO CADASTRO TENTATIVA ---')

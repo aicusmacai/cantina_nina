@@ -66,76 +66,59 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
   }
 
   return (
-    <div className="mt-4 bg-white/80 rounded-[2rem] p-6 lg:p-10 relative overflow-hidden border border-stone-200/60 shadow-soft-warm">
-      <div className="absolute top-0 right-0 w-80 h-80 bg-orange-100/50 rounded-full blur-3xl opacity-60 -z-10 translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+    <div className="mt-8 relative z-10">
       
-      <h3 className="text-2xl md:text-3xl font-black text-stone-900 mb-8 tracking-tight">Em quais dias você vai comer na cantina?</h3>
+      <h3 className="text-xl md:text-2xl font-black text-[#383b32] mb-6 tracking-tight">Em quais dias você vai comer na cantina?</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10 relative z-10">
+      <div className="grid grid-cols-2 md:grid-cols-1 gap-3 mb-24 relative z-10">
         {diasSemanaNomes.map((dia) => {
           const isSelected = diasSelecionados.includes(dia.id)
           const cardapioDia = cardapios.find(c => c.dia_semana === dia.id)
-          const prato = cardapioDia?.prato_principal || 'Não definido'
+          const prato = cardapioDia?.prato_principal || 'A definir'
           const preco = cardapioDia ? Number(cardapioDia.valor_diario) : 0
-          const imagem_url = cardapioDia?.imagem_url
+          const precoComDesconto = preco * (1 - descontoPercentual / 100)
           
-          const precoItemDesconto = preco * (1 - descontoPercentual / 100)
-          const mostrarDescontoItem = descontoPercentual > 0
-
           return (
             <motion.button
               key={dia.id}
               onClick={() => toggleDia(dia.id)}
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.98 }}
+              whileHover={{ scale: 1.01 }}
+              whileTap={{ scale: 0.99 }}
               className={`
-                relative rounded-3xl border-2 text-left transition-all overflow-hidden flex flex-col group p-0
+                relative rounded-2xl border-2 text-left transition-all overflow-hidden flex flex-col p-5
                 ${isSelected 
-                  ? 'border-nina-red-500 bg-white shadow-xl shadow-nina-red-500/10 ring-4 ring-nina-red-50' 
-                  : 'border-stone-200 bg-stone-50 hover:border-stone-300 hover:bg-white'
+                  ? 'border-nina-gold-400 bg-[#f4f0e6] shadow-sm' 
+                  : 'border-[#e8e3d5] bg-[#f4f0e6] hover:border-nina-gold-300'
                 }
               `}
             >
-              {imagem_url && (
-                <div 
-                  className="w-full h-36 bg-cover bg-center border-b border-white/5 relative"
-                  style={{ backgroundImage: `url(${imagem_url})` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/30 to-transparent"></div>
-                  <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end">
-                    <span className="font-black text-2xl text-white drop-shadow-md">
-                      {dia.label}
-                    </span>
-                  </div>
-                </div>
-              )}
-
               {/* Checkmark animado */}
-              <div className={`absolute top-4 right-4 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm z-10 ${
-                isSelected ? 'bg-nina-red-500 text-white scale-100' : 'bg-white text-stone-300 scale-90 border border-stone-200'
+              <div className={`absolute top-5 right-5 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm z-10 ${
+                isSelected ? 'bg-nina-gold-500 text-white scale-100' : 'bg-[#e8e3d5] text-[#383b32]/30 scale-90'
               }`}>
                 <Check size={14} className="stroke-[3]" />
               </div>
 
-              <div className="p-6">
-                <div className="mb-4">
-                  {!imagem_url && (
-                    <span className={`inline-block px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider mb-2 ${
-                      isSelected ? 'bg-nina-red-100 text-nina-red-700' : 'bg-stone-200 text-stone-600'
-                    }`}>
-                      {dia.label}
-                    </span>
-                  )}
-                  <h3 className={`text-xl font-bold line-clamp-2 leading-tight ${
-                    isSelected ? 'text-stone-900' : 'text-stone-600'
-                  }`}>{prato}</h3>
-                </div>
+              <div>
+                <span className="inline-block px-3 py-1 rounded-full bg-[#e8e3d5] text-[#383b32] text-[10px] font-bold uppercase tracking-wider mb-3">
+                  {dia.label}
+                </span>
                 
-                <div className={`flex items-center gap-2 mt-4 font-bold text-lg ${
-                  isSelected ? 'text-nina-red-600' : 'text-stone-600'
-                }`}>
-                  <Utensils size={18} />
-                  R$ {preco.toFixed(2).replace('.', ',')}
+                <h3 className={`text-xl font-bold leading-tight mb-2 ${
+                  isSelected ? 'text-[#383b32]' : 'text-[#383b32]/80'
+                }`}>{prato}</h3>
+                
+                <div className="flex items-center gap-1.5 font-bold text-sm text-nina-olive-600">
+                  <Utensils size={14} />
+                  {descontoPercentual > 0 ? (
+                    <div className="flex items-center gap-2">
+                      <span className="line-through text-[#383b32]/40 text-xs font-semibold">R$ {preco.toFixed(2).replace('.', ',')}</span>
+                      <span className="text-nina-gold-600">R$ {precoComDesconto.toFixed(2).replace('.', ',')}</span>
+                      <span className="bg-nina-gold-400/20 text-nina-gold-700 text-[9px] px-1.5 py-0.5 rounded-md uppercase tracking-wider border border-nina-gold-400/30">-{descontoPercentual}%</span>
+                    </div>
+                  ) : (
+                    <span>R$ {preco.toFixed(2).replace('.', ',')}</span>
+                  )}
                 </div>
               </div>
             </motion.button>
@@ -150,17 +133,19 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
         transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 20 }}
       >
         <div className="max-w-4xl mx-auto">
-          <div className={`glass-sand p-5 md:p-6 rounded-3xl border border-stone-200 shadow-[0_10px_40px_rgba(139,115,85,0.15)] flex flex-row items-center justify-between gap-4 transition-all duration-300 ${
-            diasSelecionados.length > 0 ? 'ring-2 ring-nina-red-200' : ''
+          <div className={`bg-nina-olive-700 p-5 md:p-6 rounded-2xl shadow-lg flex flex-row items-center justify-between gap-4 transition-all duration-300 ${
+            diasSelecionados.length > 0 ? 'ring-2 ring-nina-gold-400' : ''
           }`}>
             
             <div className="flex flex-col">
-              <span className="text-stone-500 font-bold text-sm uppercase tracking-wider">Total</span>
+              <span className="text-nina-olive-200 font-bold text-sm uppercase tracking-wider">
+                Total {temDesconto && <span className="text-nina-gold-400 ml-1">(-{descontoPercentual}%)</span>}
+              </span>
               <div className="flex items-baseline gap-1">
-                <span className="text-2xl md:text-3xl font-black text-stone-900 tracking-tighter">
+                <span className="text-2xl md:text-3xl font-black text-[#f4f0e6] tracking-tighter">
                   R$ {valorComDesconto.toFixed(2).replace('.', ',')}
                 </span>
-                <span className="text-stone-400 font-semibold text-xs ml-1 bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">
+                <span className="text-[#383b32] font-bold text-xs ml-2 bg-nina-gold-400 px-2 py-0.5 rounded-md">
                   {diasSelecionados.length} dia{diasSelecionados.length !== 1 ? 's' : ''}
                 </span>
               </div>
@@ -170,7 +155,7 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
               type="button"
               onClick={handleSubmit}
               disabled={isPending || diasSelecionados.length === 0}
-              className="bg-gradient-to-r from-nina-red-600 to-nina-red-500 hover:from-nina-red-500 hover:to-nina-red-400 text-white font-black text-sm md:text-base py-3 md:py-4 px-6 md:px-10 rounded-2xl md:rounded-[1.25rem] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(225,29,72,0.3)] hover:shadow-[0_8px_30px_rgba(225,29,72,0.4)] hover:-translate-y-1 flex items-center justify-center gap-2 min-w-[140px]"
+              className="bg-nina-gold-500 hover:bg-nina-gold-400 text-nina-olive-900 font-black text-sm md:text-base py-3 md:py-4 px-6 md:px-10 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:-translate-y-1 flex items-center justify-center gap-2 min-w-[140px]"
             >
               {isPending ? (
                 <>
@@ -185,7 +170,7 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
               )}
             </button>
             {error && (
-              <p className="text-red-500 text-sm font-medium mt-2 w-full text-center">{error}</p>
+              <p className="text-red-400 text-sm font-medium mt-2 w-full text-center">{error}</p>
             )}
           </div>
         </div>

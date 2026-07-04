@@ -4,6 +4,8 @@ import { useState, useTransition, useRef, useEffect } from 'react'
 import { MoreVertical, Trash2, KeyRound, UserCog, AlertCircle, CheckCircle2 } from 'lucide-react'
 import { deleteUserAccount, updateUsuarioAuth } from '@/app/actions/admin-users'
 
+import { createPortal } from 'react-dom'
+
 export default function AcoesUsuario({ userId, currentEmail }: { userId: string, currentEmail: string }) {
   const [isOpen, setIsOpen] = useState(false)
   const [modalType, setModalType] = useState<'none' | 'delete' | 'password' | 'login'>('none')
@@ -16,6 +18,11 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
   const [newLogin, setNewLogin] = useState(currentEmail.split('@')[0])
   
   const menuRef = useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -93,20 +100,20 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
     <div className="relative" ref={menuRef}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+        className="p-2 text-nina-olive-400 hover:text-[#383b32] hover:bg-[#e8e3d5]/30 rounded-lg transition-colors"
       >
         <MoreVertical size={20} />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg z-10 py-2">
-          <button onClick={() => setModalType('login')} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+        <div className="absolute right-0 mt-2 w-48 bg-white border border-[#e8e3d5] rounded-xl shadow-lg z-10 py-2">
+          <button onClick={() => setModalType('login')} className="w-full text-left px-4 py-2 text-sm text-[#383b32] hover:bg-[#e8e3d5]/30 flex items-center gap-2">
             <UserCog size={16} /> Mudar Login
           </button>
-          <button onClick={() => setModalType('password')} className="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 flex items-center gap-2">
+          <button onClick={() => setModalType('password')} className="w-full text-left px-4 py-2 text-sm text-[#383b32] hover:bg-[#e8e3d5]/30 flex items-center gap-2">
             <KeyRound size={16} /> Mudar Senha
           </button>
-          <div className="border-t border-slate-100 my-1"></div>
+          <div className="border-t border-[#e8e3d5] my-1"></div>
           <button onClick={() => setModalType('delete')} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-2 font-medium">
             <Trash2 size={16} /> Excluir Conta
           </button>
@@ -114,29 +121,29 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
       )}
 
       {/* MODALS */}
-      {modalType !== 'none' && (
+      {mounted && modalType !== 'none' && createPortal(
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h3 className="text-xl font-bold text-slate-900 mb-4">
+            <h3 className="text-xl font-bold text-[#383b32] mb-4">
               {modalType === 'delete' && 'Excluir Usuário'}
               {modalType === 'password' && 'Alterar Senha do Usuário'}
               {modalType === 'login' && 'Alterar Login do Usuário'}
             </h3>
 
             {modalType === 'delete' && (
-              <p className="text-slate-600 mb-6">
+              <p className="text-[#383b32]/60 mb-6">
                 Tem certeza que deseja excluir esta conta? Esta ação apagará o usuário e todos os seus pedidos de forma irreversível.
               </p>
             )}
 
             {modalType === 'password' && (
               <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-700 mb-2">Nova Senha</label>
+                <label className="block text-sm font-medium text-[#383b32] mb-2">Nova Senha</label>
                 <input 
                   type="text" 
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-nina-red-500 outline-none"
+                  className="w-full px-4 py-2 border border-[#e8e3d5] rounded-lg focus:ring-2 focus:ring-nina-gold-400 outline-none"
                   placeholder="No mínimo 6 caracteres"
                 />
               </div>
@@ -144,15 +151,15 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
 
             {modalType === 'login' && (
               <div className="mb-6">
-                <label className="block text-sm font-medium text-slate-700 mb-2">Novo Login (Username)</label>
+                <label className="block text-sm font-medium text-[#383b32] mb-2">Novo Login (Username)</label>
                 <input 
                   type="text" 
                   value={newLogin}
                   onChange={(e) => setNewLogin(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-nina-red-500 outline-none"
+                  className="w-full px-4 py-2 border border-[#e8e3d5] rounded-lg focus:ring-2 focus:ring-nina-gold-400 outline-none"
                   placeholder="Ex: joao.silva"
                 />
-                <p className="text-xs text-slate-500 mt-2">O sistema adicionará @nina.local automaticamente.</p>
+                <p className="text-xs text-[#383b32]/50 mt-2">O sistema adicionará @nina.local automaticamente.</p>
               </div>
             )}
 
@@ -174,7 +181,7 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
               <button 
                 onClick={fecharModal}
                 disabled={isPending}
-                className="px-4 py-2 text-slate-600 font-medium hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50"
+                className="px-4 py-2 text-[#383b32] font-medium hover:bg-[#e8e3d5]/30 rounded-lg transition-colors disabled:opacity-50"
               >
                 Cancelar
               </button>
@@ -186,8 +193,8 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
                   handleUpdateLogin
                 }
                 disabled={isPending || !!successMsg}
-                className={`px-4 py-2 text-white font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2
-                  ${modalType === 'delete' ? 'bg-red-600 hover:bg-red-700' : 'bg-nina-red-600 hover:bg-nina-red-700'}
+                className={`px-4 py-2 text-nina-olive-900 font-medium rounded-lg transition-colors disabled:opacity-50 flex items-center gap-2
+                  ${modalType === 'delete' ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-nina-gold-400 hover:bg-nina-gold-500'}
                 `}
               >
                 {isPending && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
@@ -195,7 +202,8 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
