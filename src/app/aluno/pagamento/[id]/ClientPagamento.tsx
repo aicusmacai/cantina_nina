@@ -2,8 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Copy, CheckCircle2, Loader2, RefreshCw } from 'lucide-react'
+import { Copy, CheckCircle2, Loader2, RefreshCw, XCircle } from 'lucide-react'
 import { verificarPagamento } from '@/app/actions/pagamento'
+import { cancelarPedido } from '@/app/actions/aluno'
 
 type Props = {
   pedidoId: string
@@ -19,10 +20,28 @@ export default function ClientPagamento({ pedidoId, transacaoId, qrCode, qrCodeB
   const [isVerificando, setIsVerificando] = useState(false)
   const [statusMsg, setStatusMsg] = useState('')
 
+  const [isCancelando, setIsCancelando] = useState(false)
+
   const handleCopy = () => {
     navigator.clipboard.writeText(qrCode)
     setCopiado(true)
     setTimeout(() => setCopiado(false), 2000)
+  }
+
+  const handleCancelar = async () => {
+    if (!window.confirm('Tem certeza que deseja cancelar este pedido?')) return
+    setIsCancelando(true)
+    setStatusMsg('Cancelando pedido...')
+    
+    const result = await cancelarPedido(pedidoId)
+    
+    if (result.success) {
+      setStatusMsg('Pedido cancelado com sucesso.')
+      setTimeout(() => router.push('/aluno/pedidos'), 1500)
+    } else {
+      setStatusMsg(result.error || 'Erro ao cancelar pedido.')
+      setIsCancelando(false)
+    }
   }
 
   const handleVerificar = async () => {
@@ -94,15 +113,24 @@ export default function ClientPagamento({ pedidoId, transacaoId, qrCode, qrCodeB
       <div className="pt-6 border-t border-slate-100 space-y-4">
         <button
           onClick={handleVerificar}
-          disabled={isVerificando}
+          disabled={isVerificando || isCancelando}
           className="w-full bg-nina-red-600 hover:bg-nina-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all disabled:opacity-50 flex items-center justify-center gap-2"
         >
           {isVerificando ? <Loader2 size={20} className="animate-spin" /> : <RefreshCw size={20} />}
           Já paguei / Verificar Pagamento
         </button>
 
+        <button
+          onClick={handleCancelar}
+          disabled={isVerificando || isCancelando}
+          className="w-full bg-white hover:bg-slate-50 text-slate-500 font-bold py-4 px-6 rounded-xl border border-slate-200 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+        >
+          {isCancelando ? <Loader2 size={20} className="animate-spin" /> : <XCircle size={20} />}
+          Cancelar Pedido
+        </button>
+
         {statusMsg && (
-          <p className={`text-sm font-medium ${statusMsg.includes('aprovado') && !statusMsg.includes('não') ? 'text-green-600' : 'text-amber-600'}`}>
+          <p className={`text-sm font-medium ${statusMsg.includes('sucesso') || (statusMsg.includes('aprovado') && !statusMsg.includes('não')) ? 'text-green-600' : 'text-amber-600'}`}>
             {statusMsg}
           </p>
         )}

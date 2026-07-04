@@ -40,3 +40,30 @@ export async function criarPedido(diasSemana: number[], valorTotal: number) {
     return { error: 'Erro inesperado', success: false }
   }
 }
+
+export async function cancelarPedido(pedidoId: string) {
+  try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) return { error: 'Usuário não autenticado', success: false }
+
+    const { error } = await supabase
+      .from('pedidos')
+      .update({ status: 'cancelado' })
+      .eq('id', pedidoId)
+      .eq('usuario_id', user.id)
+      .eq('status', 'pendente')
+
+    if (error) {
+      console.error('Erro ao cancelar pedido:', error)
+      return { error: 'Falha ao cancelar o pedido', success: false }
+    }
+
+    revalidatePath('/aluno/pedidos')
+    return { success: true }
+  } catch (err) {
+    console.error('Erro ao cancelar pedido:', err)
+    return { error: 'Erro inesperado', success: false }
+  }
+}
