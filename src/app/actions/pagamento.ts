@@ -33,12 +33,13 @@ export async function gerarPixParaPedido(pedidoId: string) {
 
     const payload = {
       transaction_amount: Number(pedido.valor_total),
-      description: 'Cantina NINA - Pedido Semanal',
+      title: 'Cantina Nina',
+      description: 'Cantina Nina - Pedido Semanal',
       payment_method_id: 'pix',
       payer: {
         email: (pedido.usuarios?.email || user.email).replace('.local', '.com'),
-        first_name: 'Aluno',
-        last_name: 'NINA'
+        name: 'Cantina',
+        last_name: 'Nina'
       },
       // Aqui entraria o notification_url apontando para o nosso webhook quando o site estiver online
       // notification_url: 'https://seusite.com/api/webhooks/mp'

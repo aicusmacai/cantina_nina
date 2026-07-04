@@ -50,7 +50,7 @@ export default async function MeusPedidosPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
             <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
-              Clube NINA <span className="text-2xl">🔥</span>
+              Clube Nina <span className="text-2xl">🔥</span>
             </h3>
             <p className="text-slate-400 text-sm">Coma bem e ganhe refeições grátis!</p>
           </div>

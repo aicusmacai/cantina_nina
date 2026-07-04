@@ -1,4 +1,4 @@
-# Cantina NINA 🍔
+# Cantina Nina 🍔
 
 Um sistema completo de gestão de cantina escolar, construído com Next.js, Tailwind CSS e Supabase, projetado para oferecer uma experiência moderna, ágil e segura para alunos, funcionários e administradores.
 

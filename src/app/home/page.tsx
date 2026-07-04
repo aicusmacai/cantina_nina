@@ -31,7 +31,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 text-nina-red-600 font-bold text-xl">
             <Utensils size={24} />
-            Cantina NINA
+            Cantina Nina
           </div>
           <div className="flex items-center gap-4">
             <Link 
@@ -139,7 +139,7 @@ export default async function Home() {
       
       {/* Footer */}
       <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-200 bg-white">
-        &copy; {new Date().getFullYear()} Cantina NINA. Todos os direitos reservados.
+        &copy; {new Date().getFullYear()} Cantina Nina. Todos os direitos reservados.
       </footer>
     </div>
   );

@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar (Desktop only) */}
       <aside className="hidden md:flex w-72 glass-dark shadow-xl shadow-black/50 rounded-3xl p-6 flex-col print:hidden sticky top-6 h-[calc(100vh-3rem)] overflow-y-auto custom-scrollbar">
         <div className="mb-8 px-2 flex flex-col gap-1">
-          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-nina-red-500 to-red-400 drop-shadow-sm tracking-tight">Cantina NINA</h2>
+          <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-nina-red-500 to-red-400 drop-shadow-sm tracking-tight">Cantina Nina</h2>
           <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Painel de Gestão</p>
         </div>
         

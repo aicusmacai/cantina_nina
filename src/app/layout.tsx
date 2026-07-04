@@ -6,8 +6,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Cantina NINA",
-  description: "Sistema de pedidos para a cantina NINA",
+  title: "Cantina Nina",
+  description: "Sistema de pedidos para a cantina Nina",
 };
 
 export default function RootLayout({

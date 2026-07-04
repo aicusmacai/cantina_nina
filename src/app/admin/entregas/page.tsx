@@ -65,9 +65,12 @@ export default async function FuncionarioDashboard(
         <FiltroDias diaAtual={diaSemanaAtual === 0 || diaSemanaAtual === 6 ? 1 : diaSemanaAtual} />
       </div>
 
-      <div className="hidden print:flex flex-col items-center justify-center border-b border-black border-dashed pb-2 mb-2 text-center">
-        <h2 className="font-bold text-lg uppercase">CANTINA NINA</h2>
-        <div className="text-sm font-bold mt-1">LISTA DE ENTREGAS</div>
+      <div className="hidden print:flex items-center gap-4 border-b border-slate-300 pb-4 mb-6">
+        <div className="w-12 h-12 bg-nina-red-600 text-white flex items-center justify-center rounded-xl font-bold">N</div>
+        <div>
+          <h2 className="font-bold text-lg uppercase">CANTINA Nina</h2>
+          <p className="text-sm text-slate-600">Relatório de Entregas</p>
+        </div>
         <div className="text-xs mt-1">Dia: {agoraBRT.toLocaleDateString('pt-BR')}</div>
         <div className="text-xs mt-1 font-bold">Prato: {pratoHoje}</div>
       </div>

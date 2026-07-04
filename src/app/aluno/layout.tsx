@@ -20,9 +20,9 @@ export default function AlunoLayout({ children }: { children: React.ReactNode })
       <header className="glass sticky top-0 z-20">
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <h2 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-nina-red-500 to-red-400 drop-shadow-sm">
-              Cantina NINA
-            </h2>
+            <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-nina-red-600 to-red-400 drop-shadow-sm tracking-tight text-2xl hidden md:inline-block">
+              Cantina Nina
+            </span>
             
             <nav className="hidden md:flex space-x-2">
               {links.map((link) => {
