@@ -66,10 +66,10 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
   }
 
   return (
-    <div className="mt-8 glass-dark rounded-3xl p-6 lg:p-10 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-nina-red-500/10 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
+    <div className="mt-4 bg-white/80 rounded-[2rem] p-6 lg:p-10 relative overflow-hidden border border-stone-200/60 shadow-soft-warm">
+      <div className="absolute top-0 right-0 w-80 h-80 bg-orange-100/50 rounded-full blur-3xl opacity-60 -z-10 translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
       
-      <h3 className="text-2xl font-bold text-white mb-8">Em quais dias você vai comer na cantina?</h3>
+      <h3 className="text-2xl md:text-3xl font-black text-stone-900 mb-8 tracking-tight">Em quais dias você vai comer na cantina?</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10 relative z-10">
         {diasSemanaNomes.map((dia) => {
@@ -91,8 +91,8 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
               className={`
                 relative rounded-3xl border-2 text-left transition-all overflow-hidden flex flex-col group p-0
                 ${isSelected 
-                  ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-900/40 to-slate-900/60 shadow-lg shadow-nina-red-900/20 neon-border' 
-                  : 'border-slate-800 bg-slate-900/40 hover:border-nina-red-500/50 hover:bg-slate-800/60'
+                  ? 'border-nina-red-500 bg-white shadow-xl shadow-nina-red-500/10 ring-4 ring-nina-red-50' 
+                  : 'border-stone-200 bg-stone-50 hover:border-stone-300 hover:bg-white'
                 }
               `}
             >
@@ -101,9 +101,9 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
                   className="w-full h-36 bg-cover bg-center border-b border-white/5 relative"
                   style={{ backgroundImage: `url(${imagem_url})` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 via-stone-900/30 to-transparent"></div>
                   <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end">
-                    <span className="font-black text-2xl text-white drop-shadow-lg">
+                    <span className="font-black text-2xl text-white drop-shadow-md">
                       {dia.label}
                     </span>
                   </div>
@@ -111,21 +111,23 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
               )}
 
               {/* Checkmark animado */}
-              <div className={`absolute top-4 right-4 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
-                isSelected ? 'bg-nina-red-500 text-white scale-100' : 'bg-stone-100 text-stone-300 scale-90'
+              <div className={`absolute top-4 right-4 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm z-10 ${
+                isSelected ? 'bg-nina-red-500 text-white scale-100' : 'bg-white text-stone-300 scale-90 border border-stone-200'
               }`}>
                 <Check size={14} className="stroke-[3]" />
               </div>
 
               <div className="p-6">
                 <div className="mb-4">
-                  <span className={`inline-block px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider mb-2 ${
-                    isSelected ? 'bg-nina-red-100 text-nina-red-700' : 'bg-stone-100 text-stone-500'
-                  }`}>
-                    {dia.label}
-                  </span>
+                  {!imagem_url && (
+                    <span className={`inline-block px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider mb-2 ${
+                      isSelected ? 'bg-nina-red-100 text-nina-red-700' : 'bg-stone-200 text-stone-600'
+                    }`}>
+                      {dia.label}
+                    </span>
+                  )}
                   <h3 className={`text-xl font-bold line-clamp-2 leading-tight ${
-                    isSelected ? 'text-stone-900' : 'text-stone-700'
+                    isSelected ? 'text-stone-900' : 'text-stone-600'
                   }`}>{prato}</h3>
                 </div>
                 
