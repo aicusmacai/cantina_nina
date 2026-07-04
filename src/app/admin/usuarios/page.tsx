@@ -48,29 +48,29 @@ export default async function UsuariosPage(props: { searchParams: Promise<{ q?: 
             
             return (
             <MotionDiv key={user.id} variants={fadeItem}>
-              <div className="glass bg-white/60 border border-slate-200/50 rounded-[2rem] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-white/80 transition-all duration-300 group relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-nina-red-50 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
+              <div className="glass-card border border-slate-700/50 rounded-[2rem] p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-800/80 transition-all duration-300 group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-nina-red-500/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none -translate-y-1/2 translate-x-1/2"></div>
                 
                 <div className="flex items-center gap-5 relative z-10">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-slate-100 to-white shadow-inner border border-slate-200/50 text-slate-400 flex items-center justify-center shrink-0 group-hover:from-nina-red-50 group-hover:to-white group-hover:text-nina-red-500 group-hover:border-nina-red-100 transition-all duration-300">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-slate-800 to-slate-900 shadow-inner border border-slate-700/50 text-slate-400 flex items-center justify-center shrink-0 group-hover:from-nina-red-900/50 group-hover:to-slate-900 group-hover:text-nina-red-400 group-hover:border-nina-red-500/30 transition-all duration-300">
                     <UserCircle size={32} />
                   </div>
                   
                   <div>
-                    <h3 className="font-bold text-slate-800 text-lg flex items-center gap-3">
+                    <h3 className="font-bold text-slate-100 text-lg flex items-center gap-3">
                       {user.nome_completo}
                       <span className={`px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider shadow-sm ${getRoleBadgeColor(displayRole)}`}>
                         {displayRole}
                       </span>
                     </h3>
-                    <div className="flex items-center gap-4 text-sm text-slate-500 mt-1">
+                    <div className="flex items-center gap-4 text-sm text-slate-400 mt-1">
                       <span className="flex items-center gap-1">
-                        <span className="font-medium text-slate-400">Login:</span> 
+                        <span className="font-medium text-slate-500">Login:</span> 
                         {user.email.split('@')[0]}
                       </span>
                       {!isProfessor && (
                         <span className="flex items-center gap-1">
-                          <span className="font-medium text-slate-400">Turma:</span> 
+                          <span className="font-medium text-slate-500">Turma:</span> 
                           {user.turma || 'N/A'}
                         </span>
                       )}

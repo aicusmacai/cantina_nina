@@ -17,9 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} min-h-screen flex flex-col bg-slate-50 text-slate-900 select-none`}>
+      <body className={`${inter.className} min-h-screen flex flex-col antialiased text-slate-100 select-none`}>
         {children}
-        <Toaster richColors position="top-right" />
+        <Toaster richColors position="top-right" theme="dark" />
       </body>
     </html>
   );

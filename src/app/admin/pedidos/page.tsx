@@ -32,12 +32,12 @@ export default async function AdminPedidosPage() {
         </div>
       </div>
 
-      <div className="glass bg-white/60 rounded-[2rem] shadow-sm border border-slate-200/60 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-nina-red-50 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
+      <div className="glass-dark rounded-[2rem] shadow-sm border border-slate-700/60 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-nina-red-500/10 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
         <div className="overflow-x-auto p-1">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200/80 text-xs uppercase tracking-wider text-slate-400 font-black">
+              <tr className="border-b border-slate-700/80 text-xs uppercase tracking-wider text-slate-400 font-black">
                 <th className="p-5 pl-6">Data</th>
                 <th className="p-5">Nome do Aluno</th>
                 <th className="p-5 text-center">Turma</th>
@@ -46,49 +46,49 @@ export default async function AdminPedidosPage() {
                 <th className="p-5 pr-6 text-center">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100/80">
+            <tbody className="divide-y divide-slate-800/80">
               {pedidos?.map((pedido, index) => (
                 <MotionTr 
                   key={pedido.id} 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05, duration: 0.3 }}
-                  className="border-b border-slate-100/50 hover:bg-white/80 transition-colors duration-300 group"
+                  className="border-b border-slate-800/50 hover:bg-slate-800/80 transition-colors duration-300 group"
                 >
-                  <td className="p-5 pl-6 text-sm text-slate-500 font-medium">
+                  <td className="p-5 pl-6 text-sm text-slate-400 font-medium">
                     {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
                   </td>
-                  <td className="p-5 font-bold text-slate-800">
+                  <td className="p-5 font-bold text-slate-200">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center shrink-0 font-bold text-xs uppercase shadow-inner group-hover:bg-nina-red-100 group-hover:text-nina-red-600 transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center shrink-0 font-bold text-xs uppercase shadow-inner group-hover:bg-nina-red-900/50 group-hover:text-nina-red-400 transition-colors border border-slate-700/50">
                         {((pedido.usuarios as any)?.nome_completo || '?').charAt(0)}
                       </div>
                       {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
                     </div>
                   </td>
-                  <td className="p-5 text-sm text-slate-600 text-center">
-                    <span className="bg-slate-100/80 px-3 py-1 rounded-lg font-bold border border-slate-200/50">
+                  <td className="p-5 text-sm text-slate-300 text-center">
+                    <span className="bg-slate-800/80 px-3 py-1 rounded-lg font-bold border border-slate-700/50">
                       {(pedido.usuarios as any)?.turma || '-'}
                     </span>
                   </td>
                   <td className="p-5">
                     <div className="flex gap-1.5 flex-wrap">
                       {pedido.dias_semana?.map((d: number) => (
-                        <span key={d} className="bg-slate-100 text-slate-600 text-xs px-2 py-1.5 rounded-lg font-bold border border-slate-200/50 group-hover:bg-nina-red-50 group-hover:text-nina-red-600 group-hover:border-nina-red-100 transition-colors shadow-sm">
+                        <span key={d} className="bg-slate-800 text-slate-300 text-xs px-2 py-1.5 rounded-lg font-bold border border-slate-700/50 group-hover:bg-nina-red-900/40 group-hover:text-nina-red-400 group-hover:border-nina-red-500/30 transition-colors shadow-sm">
                           {diasNomes[d]}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td className="p-5 font-black text-slate-800 text-right">
+                  <td className="p-5 font-black text-slate-200 text-right">
                     R$ {Number(pedido.valor_total).toFixed(2).replace('.', ',')}
                   </td>
                   <td className="p-5 pr-6 text-center">
                     <span className={`inline-flex items-center justify-center px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide border shadow-sm transition-transform group-hover:scale-105 ${
-                      pedido.status === 'entregue' ? 'bg-green-50 text-green-600 border-green-200' :
-                      pedido.status === 'pago' ? 'bg-blue-50 text-blue-600 border-blue-200' :
-                      pedido.status === 'cancelado' ? 'bg-red-50 text-red-600 border-red-200' :
-                      'bg-amber-50 text-amber-600 border-amber-200'
+                      pedido.status === 'entregue' ? 'bg-green-950/50 text-green-400 border-green-500/30' :
+                      pedido.status === 'pago' ? 'bg-blue-950/50 text-blue-400 border-blue-500/30' :
+                      pedido.status === 'cancelado' ? 'bg-red-950/50 text-red-400 border-red-500/30' :
+                      'bg-amber-950/50 text-amber-400 border-amber-500/30'
                     }`}>
                       {pedido.status}
                     </span>
@@ -98,9 +98,9 @@ export default async function AdminPedidosPage() {
 
               {!pedidos?.length && (
                 <tr>
-                  <td colSpan={6} className="p-10 text-center text-slate-500 font-medium bg-white/40">
+                  <td colSpan={6} className="p-10 text-center text-slate-500 font-medium bg-slate-900/40">
                     <div className="flex flex-col items-center justify-center">
-                      <ReceiptText size={48} className="text-slate-300 mb-3" />
+                      <ReceiptText size={48} className="text-slate-700 mb-3" />
                       Nenhum pedido encontrado.
                     </div>
                   </td>

@@ -66,10 +66,12 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
   }
 
   return (
-    <div className="mt-8 bg-white rounded-xl shadow-sm border border-slate-100 p-6 lg:p-8">
-      <h3 className="text-xl font-bold text-slate-800 mb-6">Em quais dias você vai comer na cantina?</h3>
+    <div className="mt-8 glass-dark rounded-3xl p-6 lg:p-10 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-nina-red-500/10 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
+      
+      <h3 className="text-2xl font-bold text-white mb-8">Em quais dias você vai comer na cantina?</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-10 relative z-10">
         {diasSemanaNomes.map((dia) => {
           const isSelected = diasSelecionados.includes(dia.id)
           const cardapioDia = cardapios.find(c => c.dia_semana === dia.id)
@@ -87,69 +89,69 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               className={`
-                relative rounded-2xl border-2 text-left transition-colors overflow-hidden flex flex-col group p-0
+                relative rounded-3xl border-2 text-left transition-all overflow-hidden flex flex-col group p-0
                 ${isSelected 
-                  ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-50 to-white shadow-md shadow-nina-red-100 ring-4 ring-nina-red-500/10' 
-                  : 'border-slate-200 bg-white hover:border-nina-red-300 hover:shadow-lg hover:shadow-slate-200/50'
+                  ? 'border-nina-red-500 bg-gradient-to-br from-nina-red-900/40 to-slate-900/60 shadow-lg shadow-nina-red-900/20 neon-border' 
+                  : 'border-slate-800 bg-slate-900/40 hover:border-nina-red-500/50 hover:bg-slate-800/60'
                 }
               `}
             >
               {imagem_url && (
                 <div 
-                  className="w-full h-32 bg-cover bg-center border-b border-slate-100/50 relative"
+                  className="w-full h-36 bg-cover bg-center border-b border-white/5 relative"
                   style={{ backgroundImage: `url(${imagem_url})` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                   <div className="absolute bottom-3 left-4 right-4 flex justify-between items-end">
-                    <span className="font-black text-xl text-white drop-shadow-md">
+                    <span className="font-black text-2xl text-white drop-shadow-lg">
                       {dia.label}
                     </span>
                     <div className={`
-                      w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300 shadow-md
-                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-white/50 bg-black/30 group-hover:border-white'}
+                      w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300 shadow-md
+                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-white/30 bg-black/50 group-hover:border-white/80'}
                     `}>
-                      {isSelected && <Check size={16} strokeWidth={3} className="animate-in zoom-in duration-200" />}
+                      {isSelected && <Check size={18} strokeWidth={3} className="animate-in zoom-in duration-200" />}
                     </div>
                   </div>
                 </div>
               )}
 
-              <div className="p-5 flex flex-col justify-between h-full flex-grow">
+              <div className="p-6 flex flex-col justify-between h-full flex-grow">
                 {!imagem_url && (
-                  <div className="flex justify-between items-start mb-3">
-                    <span className={`font-black text-xl transition-colors ${isSelected ? 'text-nina-red-700' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                  <div className="flex justify-between items-start mb-4">
+                    <span className={`font-black text-2xl transition-colors ${isSelected ? 'text-nina-red-400' : 'text-slate-300 group-hover:text-white'}`}>
                       {dia.label}
                     </span>
                     <div className={`
-                      w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300
-                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-slate-300 bg-slate-50 group-hover:border-nina-red-300'}
+                      w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300
+                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-slate-700 bg-slate-800 group-hover:border-nina-red-500/50'}
                     `}>
-                      {isSelected && <Check size={16} strokeWidth={3} className="animate-in zoom-in duration-200" />}
+                      {isSelected && <Check size={18} strokeWidth={3} className="animate-in zoom-in duration-200" />}
                     </div>
                   </div>
                 )}
 
-                <div className="flex items-start gap-3 mb-4">
+                <div className="flex items-start gap-3 mb-5">
                   {!imagem_url && (
-                    <div className={`p-2 rounded-xl shrink-0 transition-colors ${isSelected ? 'bg-nina-red-100 text-nina-red-600' : 'bg-slate-100 text-slate-400 group-hover:bg-slate-200 group-hover:text-slate-500'}`}>
-                      <Utensils size={18} />
+                    <div className={`p-2.5 rounded-xl shrink-0 transition-colors ${isSelected ? 'bg-nina-red-900/50 text-nina-red-400' : 'bg-slate-800 text-slate-500 group-hover:text-slate-300'}`}>
+                      <Utensils size={20} />
                     </div>
                   )}
-                  <p className={`text-sm font-medium leading-snug mt-1 transition-colors ${isSelected ? 'text-nina-red-900' : 'text-slate-600'}`}>
+                  <p className={`text-sm font-medium leading-relaxed mt-1 transition-colors ${isSelected ? 'text-slate-200' : 'text-slate-400 group-hover:text-slate-300'}`}>
                     {prato}
                   </p>
                 </div>
 
-              <div className="mt-auto">
+              <div className="mt-auto pt-2 border-t border-white/5">
                 {mostrarDescontoItem ? (
                   <div className="flex flex-col">
-                    <span className="text-xs text-slate-400 line-through">R$ {preco.toFixed(2).replace('.', ',')}</span>
-                    <span className={`text-base font-bold transition-colors ${isSelected ? 'text-nina-red-600' : 'text-slate-700 group-hover:text-slate-900'}`}>
+                    <span className="text-xs text-slate-500 line-through">R$ {preco.toFixed(2).replace('.', ',')}</span>
+                    <span className={`text-lg font-black transition-colors ${isSelected ? 'text-nina-red-400' : 'text-slate-300 group-hover:text-white'}`}>
                       R$ {precoItemDesconto.toFixed(2).replace('.', ',')}
                     </span>
                   </div>
                 ) : (
-                  <div className={`text-base font-bold transition-colors ${isSelected ? 'text-nina-red-600' : 'text-slate-500 group-hover:text-slate-700'}`}>
+                  <div className={`text-lg font-black transition-colors ${isSelected ? 'text-nina-red-400' : 'text-slate-300 group-hover:text-white'}`}>
                     R$ {preco.toFixed(2).replace('.', ',')}
                   </div>
                 )}
