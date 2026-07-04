@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { Receipt, Clock, CheckCircle2, XCircle } from 'lucide-react'
 import Link from 'next/link'
+import BotaoCancelarPedido from './BotaoCancelarPedido'
 
 export default async function MeusPedidosPage() {
   const supabase = await createClient()
@@ -49,10 +50,13 @@ export default async function MeusPedidosPage() {
             const cardContent = (
                 <>
                   <div>
-                    <h3 className="font-bold text-slate-900 mb-1">
-                      Refeições da Cantina
-                    </h3>
-                    <div className="text-sm text-slate-500 mb-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-bold text-slate-900">Refeições da Cantina</h3>
+                      {pedido.status === 'pendente' && (
+                        <BotaoCancelarPedido pedidoId={pedido.id} />
+                      )}
+                    </div>
+                    <div className="text-sm text-slate-500 mb-2 mt-1">
                       Dias: <span className="font-medium text-slate-700">{getDiasTexto(pedido.dias_semana)}</span>
                     </div>
                     <div className="text-xs text-slate-400">

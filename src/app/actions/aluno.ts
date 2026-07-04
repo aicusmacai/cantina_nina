@@ -48,7 +48,10 @@ export async function cancelarPedido(pedidoId: string) {
 
     if (!user) return { error: 'Usuário não autenticado', success: false }
 
-    const { error } = await supabase
+    const { createAdminClient } = await import('@/lib/supabase/admin')
+    const adminClient = createAdminClient()
+
+    const { error } = await adminClient
       .from('pedidos')
       .update({ status: 'cancelado' })
       .eq('id', pedidoId)
