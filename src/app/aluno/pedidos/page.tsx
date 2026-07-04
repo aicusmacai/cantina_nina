@@ -13,6 +13,7 @@ export default async function MeusPedidosPage() {
       *
     `)
     .eq('usuario_id', user?.id)
+    .neq('status', 'cancelado')
     .order('created_at', { ascending: false })
 
   const getStatusConfig = (status: string) => {
