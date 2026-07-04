@@ -26,6 +26,9 @@ export default async function UsuariosPage(props: { searchParams: Promise<{ q?: 
             <h1 className="text-3xl font-black text-stone-900 tracking-tight print:text-xl">Usuários e Alunos</h1>
             <p className="text-stone-500 mt-1 print:hidden">Gerencie o acesso e informações dos usuários.</p>
           </div>
+          <div className="w-full md:w-auto">
+            <BuscaUsuarios />
+          </div>
         </div>
       </div>
 

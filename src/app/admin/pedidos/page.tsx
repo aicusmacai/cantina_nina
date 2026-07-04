@@ -39,7 +39,7 @@ export default async function AdminPedidosPage() {
             <thead>
               <tr className="border-b border-stone-100 text-xs uppercase tracking-wider text-stone-400 font-black">
                 <th className="p-5 pl-6">Data</th>
-                <th className="p-5">Nome do Aluno</th>
+                <th className="p-5">Nome</th>
                 <th className="p-5 text-center">Turma</th>
                 <th className="p-5">Dias</th>
                 <th className="p-5 text-right">Valor</th>

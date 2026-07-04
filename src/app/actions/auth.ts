@@ -41,7 +41,7 @@ export async function register(prevState: any, formData: FormData) {
     const role = 'aluno'
 
     if (tipoConta === 'professor') {
-      turma = 'Professor / Funcionário'
+      turma = 'Professor'
     }
 
     console.log('--- NOVO CADASTRO TENTATIVA ---')
