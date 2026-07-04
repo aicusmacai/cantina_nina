@@ -53,7 +53,7 @@ export async function cancelarPedido(pedidoId: string) {
 
     const { error } = await adminClient
       .from('pedidos')
-      .update({ status: 'cancelado' })
+      .delete()
       .eq('id', pedidoId)
       .eq('usuario_id', user.id)
       .eq('status', 'pendente')

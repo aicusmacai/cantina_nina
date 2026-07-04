@@ -38,8 +38,9 @@ export default async function MeusPedidosPage() {
       </h1>
 
       {(!pedidos || pedidos.length === 0) ? (
-        <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 text-center">
-          <p className="text-slate-500">Você ainda não fez nenhum pedido.</p>
+        <div className="glass p-10 rounded-3xl text-center flex flex-col items-center justify-center min-h-[300px]">
+          <Receipt className="text-slate-300 w-16 h-16 mb-4" />
+          <p className="text-xl font-semibold text-slate-500">Você ainda não fez nenhum pedido.</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -48,32 +49,33 @@ export default async function MeusPedidosPage() {
             const StatusIcon = statusConfig.icon
             
             const cardContent = (
-                <>
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <h3 className="font-bold text-slate-900">Refeições da Cantina</h3>
-                      {pedido.status === 'pendente' && (
-                        <BotaoCancelarPedido pedidoId={pedido.id} />
-                      )}
+                <div className="w-full relative z-10">
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="font-bold text-slate-800 text-lg">Refeições da Cantina</h3>
+                    {pedido.status === 'pendente' && (
+                      <BotaoCancelarPedido pedidoId={pedido.id} />
+                    )}
+                  </div>
+                  <div className="text-sm font-medium text-slate-500 mb-3 bg-slate-100/50 inline-block px-3 py-1.5 rounded-lg border border-slate-200/50">
+                    <span className="text-slate-400">Dias:</span> <span className="text-slate-700">{getDiasTexto(pedido.dias_semana)}</span>
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mt-2 pt-4 border-t border-slate-100/80">
+                    <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                      Criado em {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
                     </div>
-                    <div className="text-sm text-slate-500 mb-2 mt-1">
-                      Dias: <span className="font-medium text-slate-700">{getDiasTexto(pedido.dias_semana)}</span>
-                    </div>
-                    <div className="text-xs text-slate-400">
-                      Pedido feito em: {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
+                    
+                    <div className="flex items-center justify-between md:justify-end w-full md:w-auto gap-4">
+                      <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider border shadow-sm ${statusConfig.color}`}>
+                        <StatusIcon size={14} />
+                        {statusConfig.label}
+                      </div>
+                      <span className="font-black text-xl text-slate-900">
+                        R$ {pedido.valor_total.toFixed(2).replace('.', ',')}
+                      </span>
                     </div>
                   </div>
-
-                  <div className="flex items-center justify-between md:flex-col md:items-end gap-2">
-                    <span className="font-bold text-lg text-slate-900">
-                      R$ {pedido.valor_total.toFixed(2).replace('.', ',')}
-                    </span>
-                    <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${statusConfig.color}`}>
-                      <StatusIcon size={14} />
-                      {statusConfig.label}
-                    </div>
-                  </div>
-                </>
+                </div>
               )
               
               if (pedido.status === 'pendente') {
@@ -81,16 +83,18 @@ export default async function MeusPedidosPage() {
                   <Link 
                     href={`/aluno/pagamento/${pedido.id}`}
                     key={pedido.id} 
-                    className="bg-white p-5 rounded-xl shadow-sm border border-amber-200 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:shadow-md transition-shadow cursor-pointer relative overflow-hidden"
+                    className="block glass bg-white/60 p-6 rounded-3xl flex flex-col justify-between gap-4 hover:shadow-lg hover:shadow-amber-100 transition-all duration-300 cursor-pointer relative overflow-hidden group border border-amber-200/50 hover:-translate-y-1"
                   >
-                    <div className="absolute top-0 left-0 w-1 h-full bg-amber-400"></div>
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-amber-300 to-amber-500"></div>
+                    <div className="absolute -right-10 -top-10 w-40 h-40 bg-amber-50 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                     {cardContent}
                   </Link>
                 )
               }
 
               return (
-                <div key={pedido.id} className="bg-white p-5 rounded-xl shadow-sm border border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div key={pedido.id} className="glass bg-white/60 p-6 rounded-3xl flex flex-col justify-between gap-4 relative overflow-hidden">
+                  <div className={`absolute top-0 left-0 w-1.5 h-full ${pedido.status === 'pago' ? 'bg-gradient-to-b from-green-400 to-green-600' : 'bg-slate-300'}`}></div>
                   {cardContent}
                 </div>
               )
