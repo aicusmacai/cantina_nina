@@ -37,7 +37,7 @@ export default async function ClubeNinaPage() {
           </div>
           
           <h2 className="text-2xl font-black text-stone-900 mb-1">Nível {nivel}</h2>
-          <p className="text-stone-500 text-sm mb-8 font-semibold uppercase tracking-wider">Aventureiro Culinário</p>
+
 
           <div className="w-full bg-stone-100 rounded-full h-4 overflow-hidden shadow-inner border border-stone-200/50 mb-4 relative">
             <div 
