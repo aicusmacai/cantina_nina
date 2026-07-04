@@ -65,8 +65,11 @@ export default async function FuncionarioDashboard(
         <FiltroDias diaAtual={diaSemanaAtual === 0 || diaSemanaAtual === 6 ? 1 : diaSemanaAtual} />
       </div>
 
-      <div className="print:block">
-        <h2 className="hidden print:block text-lg font-bold text-slate-800 mb-4 border-b pb-2">Prato do dia: {pratoHoje}</h2>
+      <div className="hidden print:flex flex-col items-center justify-center border-b border-black border-dashed pb-2 mb-2 text-center">
+        <h2 className="font-bold text-lg uppercase">CANTINA NINA</h2>
+        <div className="text-sm font-bold mt-1">LISTA DE ENTREGAS</div>
+        <div className="text-xs mt-1">Dia: {agoraBRT.toLocaleDateString('pt-BR')}</div>
+        <div className="text-xs mt-1 font-bold">Prato: {pratoHoje}</div>
       </div>
 
       {diaSemana === 0 || diaSemana === 6 ? (
@@ -78,30 +81,31 @@ export default async function FuncionarioDashboard(
       ) : !pedidos || pedidos.length === 0 ? (
         <div className="bg-slate-50/50 p-12 rounded-3xl border border-dashed border-slate-300 text-center print:border-none print:p-0 flex flex-col items-center justify-center">
           <AlertCircle size={48} className="text-slate-300 mb-4 print:hidden" />
-          <h2 className="text-xl font-bold text-slate-700 mb-2 print:text-base">Nenhuma entrega pendente</h2>
+          <h2 className="text-xl font-bold text-slate-700 mb-2 print:text-sm">Nenhuma entrega pendente</h2>
           <p className="text-slate-500 print:hidden max-w-sm">Nenhum aluno agendou refeição para este dia ou todas já foram entregues.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 print:gap-2 print:grid-cols-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 print:gap-1 print:grid-cols-1">
           {pedidos.map((pedido) => (
             <div 
               key={pedido.id} 
-              className="p-6 rounded-2xl border flex flex-col justify-between gap-6 shadow-sm hover:shadow-md transition-all duration-300 bg-white border-slate-200 print:border-b print:border-slate-300 print:rounded-none print:shadow-none print:p-2"
+              className="p-6 rounded-2xl border flex flex-col justify-between gap-6 shadow-sm hover:shadow-md transition-all duration-300 bg-white border-slate-200 print:border-b print:border-black print:border-dashed print:rounded-none print:shadow-none print:p-2 print:gap-1"
             >
               <div>
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3 mb-3 print:mb-1">
                   <div className="w-10 h-10 rounded-full bg-nina-red-50 text-nina-red-600 flex items-center justify-center shrink-0 font-bold text-lg print:hidden">
                     {((pedido.usuarios as any)?.nome_completo || '?').charAt(0).toUpperCase()}
                   </div>
-                  <h3 className="font-bold text-slate-900 text-lg print:text-base line-clamp-1">
+                  <h3 className="font-bold text-slate-900 text-lg print:text-sm uppercase print:leading-tight">
                     {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
                   </h3>
                 </div>
                 
-                <div className="flex flex-col gap-2 text-sm text-slate-500 print:text-slate-700 bg-slate-50 p-3 rounded-xl print:bg-transparent print:p-0">
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium text-slate-600">Turma</span>
-                    <span className="font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200">{(pedido.usuarios as any)?.turma || '-'}</span>
+                <div className="flex flex-col gap-2 text-sm text-slate-500 print:text-xs print:text-black bg-slate-50 p-3 rounded-xl print:bg-transparent print:p-0 print:gap-0">
+                  <div className="flex justify-between items-center print:justify-start print:gap-2">
+                    <span className="font-medium text-slate-600 print:hidden">Turma</span>
+                    <span className="hidden print:inline font-bold">Turma:</span>
+                    <span className="font-bold text-slate-900 bg-white px-2 py-0.5 rounded border border-slate-200 print:border-none print:bg-transparent print:px-0 print:text-black">{(pedido.usuarios as any)?.turma || '-'}</span>
                   </div>
                   <div className="flex justify-between items-center print:hidden">
                     <span className="font-medium text-slate-600">Prato</span>
