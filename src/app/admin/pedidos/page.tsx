@@ -38,7 +38,7 @@ export default async function AdminPedidosPage() {
             <thead>
               <tr className="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-bold">
                 <th className="p-4">Data</th>
-                <th className="p-4">Aluno</th>
+                <th className="p-4">Nome</th>
                 <th className="p-4">Turma</th>
                 <th className="p-4">Dias Escolhidos</th>
                 <th className="p-4">Valor Total</th>

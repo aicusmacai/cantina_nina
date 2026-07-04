@@ -122,5 +122,5 @@ export async function register(prevState: any, formData: FormData) {
 export async function logout() {
   const supabase = await createClient()
   await supabase.auth.signOut()
-  redirect('/login')
+  redirect('/home?login=true')
 }
