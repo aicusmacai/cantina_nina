@@ -21,8 +21,8 @@
 
 @layer base {
   :root {
-    --background: #0f1115; /* Slate 950 */
-    --foreground: #f8fafc; /* Slate 50 */
+    --background: #fdfbf7;
+    --foreground: #1c1917; /* stone-900 */
   }
 }
 
@@ -36,8 +36,12 @@ body {
   .glass {
     @apply bg-slate-900/60 backdrop-blur-xl border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)];
   }
-  .glass-dark {
-    @apply bg-black/60 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.7)];
+  .glass-sand {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(230, 222, 208, 0.6);
+    box-shadow: 0 4px 20px rgba(139, 115, 85, 0.05);
   }
   .glass-card {
     @apply bg-slate-800/40 backdrop-blur-md border border-slate-700/50 hover:bg-slate-800/60 transition-colors shadow-lg;
@@ -46,8 +50,30 @@ body {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-nina-red-500 to-red-400;
   }
   .neon-border {
-    @apply border border-nina-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.3)];
+    box-shadow: 0 0 10px rgba(225, 29, 72, 0.1), inset 0 0 5px rgba(225, 29, 72, 0.05);
   }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(247, 245, 240, 0.5);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(214, 203, 187, 0.8);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(189, 175, 155, 1);
+  }
+}
+
+/* Warm background pattern */
+.bg-pattern-warm {
+  background-color: #fdfbf7;
+  background-image: radial-gradient(rgba(189, 175, 155, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 @media print {

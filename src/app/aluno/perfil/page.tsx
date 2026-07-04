@@ -85,30 +85,34 @@ export default function PerfilPage() {
     <div className="max-w-md mx-auto space-y-6">
       
       {/* Informações do Usuário */}
-      <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 text-center relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-r from-nina-red-500 to-orange-400"></div>
+      <div className="glass-sand p-8 rounded-3xl shadow-soft-warm border border-stone-200/50 text-center relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-r from-nina-red-500 to-orange-400"></div>
         <div className="relative z-10 flex justify-center mb-4 mt-8">
-          <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-white text-slate-300">
-            <UserCircle size={80} />
+          <div className="w-28 h-28 bg-white rounded-full flex items-center justify-center shadow-lg border-4 border-white text-stone-300">
+            <UserCircle size={90} />
           </div>
         </div>
         
-        <h2 className="text-2xl font-black text-slate-900 mb-6">{userData?.nome_completo}</h2>
+        <h2 className="text-2xl font-black text-stone-900 mb-6">{userData?.nome_completo}</h2>
 
         <div className="space-y-4 text-left">
-          <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-            <Mail className="text-slate-400" size={20} />
+          <div className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-stone-100 shadow-sm">
+            <div className="p-3 bg-stone-50 text-stone-500 rounded-xl">
+              <Mail size={24} />
+            </div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Login (Username)</p>
-              <p className="text-sm font-bold text-slate-900">{userData?.email?.split('@')[0]}</p>
+              <p className="text-xs text-stone-400 font-bold uppercase tracking-wider">Login</p>
+              <p className="text-base font-bold text-stone-900">{userData?.email?.split('@')[0]}</p>
             </div>
           </div>
           
-          <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl">
-            <GraduationCap className="text-slate-400" size={20} />
+          <div className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-stone-100 shadow-sm">
+            <div className="p-3 bg-stone-50 text-stone-500 rounded-xl">
+              <GraduationCap size={24} />
+            </div>
             <div>
-              <p className="text-xs text-slate-500 font-medium">Turma/Cargo</p>
-              <p className="text-sm font-bold text-slate-900">{userData?.turma || 'Não informado'}</p>
+              <p className="text-xs text-stone-400 font-bold uppercase tracking-wider">Turma/Cargo</p>
+              <p className="text-base font-bold text-stone-900">{userData?.turma || 'Não informado'}</p>
             </div>
           </div>
         </div>
@@ -116,7 +120,7 @@ export default function PerfilPage() {
         {!showPasswordForm && (
           <button 
             onClick={() => setShowPasswordForm(true)}
-            className="w-full bg-white border-2 border-slate-200 hover:border-nina-red-200 hover:bg-nina-red-50 text-slate-700 hover:text-nina-red-600 font-bold py-3 rounded-xl transition-all flex justify-center items-center gap-2 mt-8"
+            className="w-full bg-white border border-stone-200 hover:border-nina-red-200 hover:bg-nina-red-50 text-stone-700 hover:text-nina-red-600 font-bold py-4 rounded-2xl transition-all flex justify-center items-center gap-2 mt-8 shadow-sm hover:shadow-md"
           >
             <KeyRound size={20} /> Mudar Minha Senha
           </button>

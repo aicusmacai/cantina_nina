@@ -106,116 +106,88 @@ export default function FormularioPedido({ cardapios, descontoPercentual = 0 }: 
                     <span className="font-black text-2xl text-white drop-shadow-lg">
                       {dia.label}
                     </span>
-                    <div className={`
-                      w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300 shadow-md
-                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-white/30 bg-black/50 group-hover:border-white/80'}
-                    `}>
-                      {isSelected && <Check size={18} strokeWidth={3} className="animate-in zoom-in duration-200" />}
-                    </div>
                   </div>
                 </div>
               )}
 
-              <div className="p-6 flex flex-col justify-between h-full flex-grow">
-                {!imagem_url && (
-                  <div className="flex justify-between items-start mb-4">
-                    <span className={`font-black text-2xl transition-colors ${isSelected ? 'text-nina-red-400' : 'text-slate-300 group-hover:text-white'}`}>
-                      {dia.label}
-                    </span>
-                    <div className={`
-                      w-8 h-8 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-300
-                      ${isSelected ? 'bg-nina-red-500 border-nina-red-500 text-white scale-110' : 'border-slate-700 bg-slate-800 group-hover:border-nina-red-500/50'}
-                    `}>
-                      {isSelected && <Check size={18} strokeWidth={3} className="animate-in zoom-in duration-200" />}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-start gap-3 mb-5">
-                  {!imagem_url && (
-                    <div className={`p-2.5 rounded-xl shrink-0 transition-colors ${isSelected ? 'bg-nina-red-900/50 text-nina-red-400' : 'bg-slate-800 text-slate-500 group-hover:text-slate-300'}`}>
-                      <Utensils size={20} />
-                    </div>
-                  )}
-                  <p className={`text-sm font-medium leading-relaxed mt-1 transition-colors ${isSelected ? 'text-slate-200' : 'text-slate-400 group-hover:text-slate-300'}`}>
-                    {prato}
-                  </p>
-                </div>
-
-              <div className="mt-auto pt-2 border-t border-white/5">
-                {mostrarDescontoItem ? (
-                  <div className="flex flex-col">
-                    <span className="text-xs text-slate-500 line-through">R$ {preco.toFixed(2).replace('.', ',')}</span>
-                    <span className={`text-lg font-black transition-colors ${isSelected ? 'text-nina-red-400' : 'text-slate-300 group-hover:text-white'}`}>
-                      R$ {precoItemDesconto.toFixed(2).replace('.', ',')}
-                    </span>
-                  </div>
-                ) : (
-                  <div className={`text-lg font-black transition-colors ${isSelected ? 'text-nina-red-400' : 'text-slate-300 group-hover:text-white'}`}>
-                    R$ {preco.toFixed(2).replace('.', ',')}
-                  </div>
-                )}
+              {/* Checkmark animado */}
+              <div className={`absolute top-4 right-4 w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ${
+                isSelected ? 'bg-nina-red-500 text-white scale-100' : 'bg-stone-100 text-stone-300 scale-90'
+              }`}>
+                <Check size={14} className="stroke-[3]" />
               </div>
-            </div>
+
+              <div className="p-6">
+                <div className="mb-4">
+                  <span className={`inline-block px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider mb-2 ${
+                    isSelected ? 'bg-nina-red-100 text-nina-red-700' : 'bg-stone-100 text-stone-500'
+                  }`}>
+                    {dia.label}
+                  </span>
+                  <h3 className={`text-xl font-bold line-clamp-2 leading-tight ${
+                    isSelected ? 'text-stone-900' : 'text-stone-700'
+                  }`}>{prato}</h3>
+                </div>
+                
+                <div className={`flex items-center gap-2 mt-4 font-bold text-lg ${
+                  isSelected ? 'text-nina-red-600' : 'text-stone-600'
+                }`}>
+                  <Utensils size={18} />
+                  R$ {preco.toFixed(2).replace('.', ',')}
+                </div>
+              </div>
             </motion.button>
           )
         })}
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between p-6 md:p-8 bg-gradient-to-r from-slate-900 to-slate-800 rounded-2xl shadow-xl shadow-slate-900/20 text-white relative overflow-hidden">
-        {/* Elemento decorativo */}
-        <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
-        <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-nina-red-500/20 rounded-full blur-2xl pointer-events-none"></div>
-
-        <div className="text-center sm:text-left mb-6 sm:mb-0 relative z-10 w-full sm:w-auto">
-          <p className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">
-            Total do Pedido
-          </p>
-          <div className="text-4xl md:text-5xl font-black text-white flex flex-wrap items-baseline justify-center sm:justify-start gap-3">
-            <div className="flex items-baseline">
-              <span className="text-2xl text-slate-400 font-bold mr-2">R$</span>
-              <span className="tabular-nums tracking-tight">{valorComDesconto.toFixed(2).replace('.', ',')}</span>
-            </div>
+      <motion.div 
+        className="fixed bottom-[4.5rem] md:bottom-8 left-4 right-4 md:static md:left-auto md:right-auto z-40 md:mt-8"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5, type: "spring", stiffness: 200, damping: 20 }}
+      >
+        <div className="max-w-4xl mx-auto">
+          <div className={`glass-sand p-5 md:p-6 rounded-3xl border border-stone-200 shadow-[0_10px_40px_rgba(139,115,85,0.15)] flex flex-row items-center justify-between gap-4 transition-all duration-300 ${
+            diasSelecionados.length > 0 ? 'ring-2 ring-nina-red-200' : ''
+          }`}>
             
-            {temDesconto && (
-              <div className="flex flex-col sm:flex-row items-center gap-2">
-                <span className="text-lg md:text-xl text-slate-500 font-medium line-through">
-                  R$ {valorOriginal.toFixed(2).replace('.', ',')}
+            <div className="flex flex-col">
+              <span className="text-stone-500 font-bold text-sm uppercase tracking-wider">Total</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl md:text-3xl font-black text-stone-900 tracking-tighter">
+                  R$ {valorComDesconto.toFixed(2).replace('.', ',')}
                 </span>
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-bold uppercase tracking-wider border border-green-500/30">
-                  -{descontoPercentual}% OFF
+                <span className="text-stone-400 font-semibold text-xs ml-1 bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">
+                  {diasSelecionados.length} dia{diasSelecionados.length !== 1 ? 's' : ''}
                 </span>
               </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={isPending || diasSelecionados.length === 0}
+              className="bg-gradient-to-r from-nina-red-600 to-nina-red-500 hover:from-nina-red-500 hover:to-nina-red-400 text-white font-black text-sm md:text-base py-3 md:py-4 px-6 md:px-10 rounded-2xl md:rounded-[1.25rem] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_4px_20px_rgba(225,29,72,0.3)] hover:shadow-[0_8px_30px_rgba(225,29,72,0.4)] hover:-translate-y-1 flex items-center justify-center gap-2 min-w-[140px]"
+            >
+              {isPending ? (
+                <>
+                  <Loader2 size={24} className="animate-spin" />
+                  Processando...
+                </>
+              ) : (
+                <>
+                  <ShoppingBag size={20} />
+                  Confirmar
+                </>
+              )}
+            </button>
+            {error && (
+              <p className="text-red-500 text-sm font-medium mt-2 w-full text-center">{error}</p>
             )}
           </div>
-          <p className="text-sm text-slate-400 mt-2 font-medium">
-            {diasSelecionados.length} {diasSelecionados.length === 1 ? 'dia selecionado' : 'dias selecionados'} na semana
-          </p>
         </div>
-
-        <div className="w-full sm:w-auto flex flex-col items-center relative z-10">
-          <button
-            onClick={handleSubmit}
-            disabled={diasSelecionados.length === 0 || isPending}
-            className="w-full sm:w-auto bg-gradient-to-r from-nina-red-600 to-nina-red-500 hover:from-nina-red-500 hover:to-nina-red-400 text-white font-bold py-4 px-10 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:grayscale flex items-center justify-center gap-3 shadow-lg shadow-nina-red-900/50 hover:shadow-nina-red-500/40 hover:-translate-y-1 active:translate-y-0"
-          >
-            {isPending ? (
-              <>
-                <Loader2 size={24} className="animate-spin" />
-                Processando...
-              </>
-            ) : (
-              <>
-                <ShoppingBag size={24} />
-                Confirmar Pedido
-              </>
-            )}
-          </button>
-          {error && (
-            <p className="text-red-500 text-sm font-medium mt-2">{error}</p>
-          )}
-        </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

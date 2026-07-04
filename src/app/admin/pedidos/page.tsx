@@ -16,7 +16,7 @@ export default async function AdminPedidosPage() {
       created_at,
       usuarios ( nome_completo, turma )
     `)
-    .neq('status', 'pendente')
+    .in('status', ['pago', 'entregue'])
     .order('created_at', { ascending: false })
 
   const diasNomes: Record<number, string> = {
@@ -27,17 +27,17 @@ export default async function AdminPedidosPage() {
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 mb-2">Todos os Pedidos</h1>
-          <p className="text-slate-500">Histórico completo de pedidos realizados na cantina.</p>
+          <h1 className="text-2xl font-bold text-stone-900 mb-2">Todos os Pedidos</h1>
+          <p className="text-stone-500">Histórico completo de pedidos realizados na cantina.</p>
         </div>
       </div>
 
-      <div className="glass-dark rounded-[2rem] shadow-sm border border-slate-700/60 overflow-hidden relative">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-nina-red-500/10 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
+      <div className="bg-white rounded-[2rem] shadow-sm border border-stone-200 overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl opacity-50 -z-10 translate-x-1/2 -translate-y-1/2"></div>
         <div className="overflow-x-auto p-1">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-700/80 text-xs uppercase tracking-wider text-slate-400 font-black">
+              <tr className="border-b border-stone-100 text-xs uppercase tracking-wider text-stone-400 font-black">
                 <th className="p-5 pl-6">Data</th>
                 <th className="p-5">Nome do Aluno</th>
                 <th className="p-5 text-center">Turma</th>
@@ -46,49 +46,49 @@ export default async function AdminPedidosPage() {
                 <th className="p-5 pr-6 text-center">Status</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/80">
+            <tbody className="divide-y divide-stone-100">
               {pedidos?.map((pedido, index) => (
                 <MotionTr 
                   key={pedido.id} 
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05, duration: 0.3 }}
-                  className="border-b border-slate-800/50 hover:bg-slate-800/80 transition-colors duration-300 group"
+                  className="border-b border-stone-50 hover:bg-stone-50 transition-colors duration-300 group"
                 >
-                  <td className="p-5 pl-6 text-sm text-slate-400 font-medium">
+                  <td className="p-5 pl-6 text-sm text-stone-500 font-medium">
                     {new Date(pedido.created_at).toLocaleDateString('pt-BR')}
                   </td>
-                  <td className="p-5 font-bold text-slate-200">
+                  <td className="p-5 font-bold text-stone-900">
                     <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center shrink-0 font-bold text-xs uppercase shadow-inner group-hover:bg-nina-red-900/50 group-hover:text-nina-red-400 transition-colors border border-slate-700/50">
+                      <div className="w-8 h-8 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center shrink-0 font-bold text-xs uppercase shadow-inner group-hover:bg-amber-100 group-hover:text-amber-700 transition-colors border border-stone-200">
                         {((pedido.usuarios as any)?.nome_completo || '?').charAt(0)}
                       </div>
                       {(pedido.usuarios as any)?.nome_completo || 'Aluno Excluído'}
                     </div>
                   </td>
-                  <td className="p-5 text-sm text-slate-300 text-center">
-                    <span className="bg-slate-800/80 px-3 py-1 rounded-lg font-bold border border-slate-700/50">
+                  <td className="p-5 text-sm text-stone-600 text-center">
+                    <span className="bg-stone-100 px-3 py-1 rounded-lg font-bold border border-stone-200">
                       {(pedido.usuarios as any)?.turma || '-'}
                     </span>
                   </td>
                   <td className="p-5">
                     <div className="flex gap-1.5 flex-wrap">
                       {pedido.dias_semana?.map((d: number) => (
-                        <span key={d} className="bg-slate-800 text-slate-300 text-xs px-2 py-1.5 rounded-lg font-bold border border-slate-700/50 group-hover:bg-nina-red-900/40 group-hover:text-nina-red-400 group-hover:border-nina-red-500/30 transition-colors shadow-sm">
+                        <span key={d} className="bg-stone-50 text-stone-600 text-xs px-2 py-1.5 rounded-lg font-bold border border-stone-200 group-hover:bg-amber-50 group-hover:text-amber-700 group-hover:border-amber-200 transition-colors shadow-sm">
                           {diasNomes[d]}
                         </span>
                       ))}
                     </div>
                   </td>
-                  <td className="p-5 font-black text-slate-200 text-right">
+                  <td className="p-5 font-black text-stone-900 text-right">
                     R$ {Number(pedido.valor_total).toFixed(2).replace('.', ',')}
                   </td>
                   <td className="p-5 pr-6 text-center">
                     <span className={`inline-flex items-center justify-center px-3 py-1.5 rounded-xl text-xs font-bold uppercase tracking-wide border shadow-sm transition-transform group-hover:scale-105 ${
-                      pedido.status === 'entregue' ? 'bg-green-950/50 text-green-400 border-green-500/30' :
-                      pedido.status === 'pago' ? 'bg-blue-950/50 text-blue-400 border-blue-500/30' :
-                      pedido.status === 'cancelado' ? 'bg-red-950/50 text-red-400 border-red-500/30' :
-                      'bg-amber-950/50 text-amber-400 border-amber-500/30'
+                      pedido.status === 'entregue' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                      pedido.status === 'pago' ? 'bg-sky-50 text-sky-700 border-sky-200' :
+                      pedido.status === 'cancelado' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                      'bg-amber-50 text-amber-700 border-amber-200'
                     }`}>
                       {pedido.status}
                     </span>
@@ -98,9 +98,9 @@ export default async function AdminPedidosPage() {
 
               {!pedidos?.length && (
                 <tr>
-                  <td colSpan={6} className="p-10 text-center text-slate-500 font-medium bg-slate-900/40">
+                  <td colSpan={6} className="p-10 text-center text-stone-400 font-medium bg-stone-50/50">
                     <div className="flex flex-col items-center justify-center">
-                      <ReceiptText size={48} className="text-slate-700 mb-3" />
+                      <ReceiptText size={48} className="text-stone-300 mb-3" />
                       Nenhum pedido encontrado.
                     </div>
                   </td>
