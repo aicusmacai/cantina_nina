@@ -12,7 +12,7 @@ export async function login(prevState: any, formData: FormData) {
       return { error: 'Preencha todos os campos', success: false }
     }
 
-    const email = `${username.trim().toLowerCase()}@nina.local`
+    const email = `${username.trim().toLowerCase()}@cantinanina.com`
     const supabase = await createClient()
 
     const { error } = await supabase.auth.signInWithPassword({
@@ -62,7 +62,7 @@ export async function register(prevState: any, formData: FormData) {
       return { error: 'Preencha todos os campos obrigatórios, incluindo a Turma', success: false }
     }
 
-    const email = `${username.trim().toLowerCase()}@nina.local`
+    const email = `${username.trim().toLowerCase()}@cantinanina.com`
     const supabase = await createClient()
 
     const { data: signUpData, error } = await supabase.auth.signUp({

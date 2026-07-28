@@ -85,7 +85,7 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
     }
     setErrorMsg('')
     startTransition(async () => {
-      const emailFormated = `${newLogin.trim().toLowerCase()}@nina.local`
+      const emailFormated = `${newLogin.trim().toLowerCase()}@cantinanina.com`
       const res = await updateUsuarioAuth(userId, { email: emailFormated })
       if (!res.success) {
         setErrorMsg(res.error || 'Erro ao alterar login')
@@ -159,7 +159,7 @@ export default function AcoesUsuario({ userId, currentEmail }: { userId: string,
                   className="w-full px-4 py-2 border border-[#e8e3d5] rounded-lg focus:ring-2 focus:ring-nina-gold-400 outline-none"
                   placeholder="Ex: joao.silva"
                 />
-                <p className="text-xs text-[#383b32]/50 mt-2">O sistema adicionará @nina.local automaticamente.</p>
+                <p className="text-xs text-[#383b32]/50 mt-2">O sistema adicionará @cantinanina.com automaticamente.</p>
               </div>
             )}
 
