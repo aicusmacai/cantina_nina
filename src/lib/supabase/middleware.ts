@@ -82,11 +82,9 @@ export async function updateSession(request: NextRequest) {
     
     if (path.startsWith('/aluno') && role !== 'aluno' && role !== 'responsavel' && role !== 'admin') {
       const url = request.nextUrl.clone()
-      url.pathname = '/admin' // Se admin acessar /aluno, redireciona de volta ou permite? Permite se não houver conflito, mas por segurança vamos isolar.
-      // Melhor apenas validar se não for admin:
-      if(role !== 'admin') {
-          return NextResponse.redirect(url)
-      }
+      // Avoid infinite loop: if role is unknown, do not redirect to /admin, send to /home instead
+      url.pathname = '/home'
+      return NextResponse.redirect(url)
     }
   }
 
