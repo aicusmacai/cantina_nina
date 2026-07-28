@@ -44,11 +44,28 @@ export async function POST(req: Request) {
             .single()
 
           if (pagamento?.pedido_id) {
-            // Atualizar status do pedido correspondente
-            await supabase
+            // Atualizar status do pedido correspondente e pegar o usuario_id
+            const { data: pedidoAtualizado } = await supabase
               .from('pedidos')
               .update({ status: 'pago' })
               .eq('id', pagamento.pedido_id)
+              .select('usuario_id')
+              .single()
+
+            if (pedidoAtualizado?.usuario_id) {
+              // Buscar pontos atuais e adicionar 2 pontos pelo pedido
+              const { data: userRow } = await supabase
+                .from('usuarios')
+                .select('pontos_fidelidade')
+                .eq('id', pedidoAtualizado.usuario_id)
+                .single();
+                
+              const currentPoints = userRow?.pontos_fidelidade || 0;
+              await supabase
+                .from('usuarios')
+                .update({ pontos_fidelidade: currentPoints + 2 })
+                .eq('id', pedidoAtualizado.usuario_id);
+            }
           }
         }
       }

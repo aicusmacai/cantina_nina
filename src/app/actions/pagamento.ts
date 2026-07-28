@@ -141,11 +141,28 @@ export async function verificarPagamento(transacaoId: string, pedidoId: string) 
         .update({ status: 'pago', data_pagamento: new Date().toISOString() })
         .eq('transacao_id', transacaoId)
 
-      // Atualizar pedido ignorando RLS
-      await adminClient
+      // Atualizar pedido ignorando RLS e pegar o usuario_id
+      const { data: pedidoAtualizado } = await adminClient
         .from('pedidos')
         .update({ status: 'pago' })
         .eq('id', pedidoId)
+        .select('usuario_id')
+        .single()
+
+      if (pedidoAtualizado?.usuario_id) {
+        // Buscar pontos atuais e adicionar 2 pontos pelo pedido
+        const { data: userRow } = await adminClient
+          .from('usuarios')
+          .select('pontos_fidelidade')
+          .eq('id', pedidoAtualizado.usuario_id)
+          .single();
+          
+        const currentPoints = userRow?.pontos_fidelidade || 0;
+        await adminClient
+          .from('usuarios')
+          .update({ pontos_fidelidade: currentPoints + 2 })
+          .eq('id', pedidoAtualizado.usuario_id);
+      }
 
       revalidatePath('/aluno/pedidos')
       revalidatePath('/admin/entregas')
